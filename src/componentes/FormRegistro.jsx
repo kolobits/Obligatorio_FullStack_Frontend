@@ -1,0 +1,187 @@
+import { useState } from "react";
+import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useDispatch } from "react-redux";
+import { guardarToken } from "../store/slices/usuarioSlice";
+import registroSchema from "./validations/registroSchema";
+
+const FormRegistro = () => {
+
+  const dispatch = useDispatch();
+  const [errorRegistro, setErrorRegistro] = useState("");
+
+  const {
+    control,
+    handleSubmit,
+    reset,
+    formState: { errors, isValid }
+  } = useForm({
+    resolver: yupResolver(registroSchema),
+    mode: "onChange",
+    defaultValues: {
+      name: "",
+      username: "",
+      email: "",
+      password: "",
+      confirmPassword: ""
+    }
+  })
+
+  const ingresar = (username, password) => {
+    let objLogin = {
+      "username": username,
+      "password": password
+    }
+
+    fetch("https://obligatorio1-fullstack.vercel.app/v1/auth/login", {
+      method: 'POST',
+      body: JSON.stringify(objLogin),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then(r => r.json())
+      .then(datos => {
+        console.log(datos);
+        localStorage.setItem("token", datos.token);
+        dispatch(guardarToken(datos.token));
+      })
+  }
+
+  const onSubmit = data => {
+    let objRegistro = {
+      "name": data.name,
+      "username": data.username,
+      "email": data.email,
+      "password": data.password
+    }
+
+    fetch("https://obligatorio1-fullstack.vercel.app/v1/auth/signup", {
+      method: 'POST',
+      body: JSON.stringify(objRegistro),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      }
+    })
+      .then(r => r.json())
+      .then(datos => {
+        console.log(datos);
+        if (datos.id) {
+          setErrorRegistro("");
+          ingresar(data.username, data.password);
+          reset();
+        } else if (datos.message) {
+          setErrorRegistro(datos.message);
+        } else {
+          setErrorRegistro(datos.error);
+        }
+      })
+  }
+
+  return (
+    <section className="auth-form">
+      <form noValidate>
+        <h2 className="mb-1">Creá tu cuenta</h2>
+        <p className="text-secondary mb-4">Arrancás en el plan plus, con lugar para 4 viajes.</p>
+
+        <div className="mb-3">
+          <label htmlFor="name" className="form-label">Nombre</label>
+          <Controller
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                id="name"
+                className={errors.name ? "form-control is-invalid" : "form-control"}
+              />
+            )}
+          />
+          {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="username" className="form-label">Usuario</label>
+          <Controller
+            control={control}
+            name="username"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="text"
+                id="username"
+                className={errors.username ? "form-control is-invalid" : "form-control"}
+              />
+            )}
+          />
+          {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="email" className="form-label">Email</label>
+          <Controller
+            control={control}
+            name="email"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="email"
+                id="email"
+                className={errors.email ? "form-control is-invalid" : "form-control"}
+              />
+            )}
+          />
+          {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="password" className="form-label">Contraseña</label>
+          <Controller
+            control={control}
+            name="password"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="password"
+                id="password"
+                className={errors.password ? "form-control is-invalid" : "form-control"}
+              />
+            )}
+          />
+          {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
+        </div>
+
+        <div className="mb-3">
+          <label htmlFor="confirmPassword" className="form-label">Repetir contraseña</label>
+          <Controller
+            control={control}
+            name="confirmPassword"
+            render={({ field }) => (
+              <input
+                {...field}
+                type="password"
+                id="confirmPassword"
+                className={errors.confirmPassword ? "form-control is-invalid" : "form-control"}
+              />
+            )}
+          />
+          {errors.confirmPassword && <div className="invalid-feedback">{errors.confirmPassword.message}</div>}
+        </div>
+
+        {errorRegistro && <div className="alert alert-danger" role="alert">{errorRegistro}</div>}
+
+        <button
+          type="button"
+          className="btn btn-senal w-100 mt-2"
+          onClick={handleSubmit(onSubmit)}
+          disabled={!isValid}>
+          Crear cuenta
+        </button>
+        <p className="mt-4 mb-0">¿Ya tenés cuenta? <a href="#">Ingresá</a></p>
+      </form>
+    </section>
+  );
+};
+
+export default FormRegistro;
