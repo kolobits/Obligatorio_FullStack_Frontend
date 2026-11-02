@@ -1,0 +1,59 @@
+.asientos {
+  display: flex;
+  gap: 6px;
+}
+
+.asiento {
+  width: 22px;
+  height: 26px;
+  border-radius: 6px 6px 3px 3px;
+  border: 2px solid var(--tinta);
+}
+
+.asiento.ocupado {
+  background: var(--tinta);
+}
+
+.plan {
+  height: 100%;
+}
+
+.plan .pase-talon {
+  justify-content: flex-start;
+}
+
+.plan-etiqueta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  width: fit-content;
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  background: var(--senal);
+  color: var(--tinta);
+  margin-bottom: 0.75rem;
+}
+
+.plan-etiqueta-suave {
+  background: var(--senal-suave);
+  color: #8a6100;
+}
+
+.plan-lista {
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0 1.5rem;
+}
+
+.plan-lista li {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.35rem 0;
+}
+
+.plan-lista .no {
+  color: var(--lluvia);
+  text-decoration: line-through;
+}

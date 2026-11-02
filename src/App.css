@@ -1,5 +1,4 @@
 :root {
-  /* Paleta */
   --tinta: #13213c;
   --aluminio: #e8ecf2;
   --papel: #ffffff;
@@ -10,15 +9,12 @@
   --alerta: #c93a32;
   --linea: #d3d9e3;
 
-  /* Tipografía */
   --fuente-titulos: "Bricolage Grotesque", system-ui, sans-serif;
   --fuente-texto: "Instrument Sans", system-ui, sans-serif;
 
-  /* Radios: chico para controles, grande para pases */
   --radio-control: 10px;
   --radio-pase: 18px;
 
-  /* Bootstrap toma estos valores */
   --bs-body-font-family: var(--fuente-texto);
   --bs-body-color: var(--tinta);
   --bs-body-bg: var(--aluminio);
@@ -52,13 +48,11 @@ h3 {
   font-size: 1.15rem;
 }
 
-/* Foco visible para teclado */
 :focus-visible {
   outline: 3px solid var(--ruta);
   outline-offset: 2px;
 }
 
-/* ---------- Botones ---------- */
 .btn {
   border-radius: var(--radio-control);
   font-weight: 600;
@@ -76,6 +70,13 @@ h3 {
   background: #ffbb00;
   border-color: #ffbb00;
   color: var(--tinta);
+}
+
+.btn-senal:disabled {
+  background: var(--senal);
+  border-color: var(--senal);
+  color: var(--tinta);
+  opacity: 0.45;
 }
 
 .btn-tinta {
@@ -112,7 +113,38 @@ h3 {
   color: var(--papel);
 }
 
-/* ---------- Formularios ---------- */
+main a:not([class]) {
+  color: var(--ruta);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+main a:not([class]):hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.volver {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-weight: 600;
+  color: var(--lluvia);
+  text-decoration: none;
+}
+
+.volver:hover {
+  color: var(--tinta);
+}
+
+.volver i {
+  transition: transform 0.15s;
+}
+
+.volver:hover i {
+  transform: translateX(-3px);
+}
+
 .form-label {
   font-weight: 600;
   margin-bottom: 0.35rem;
@@ -148,238 +180,6 @@ h3 {
   color: var(--lluvia);
 }
 
-/* ---------- Barra de navegación ---------- */
-.barra {
-  background: var(--papel);
-  border-bottom: 1px solid var(--linea);
-}
-
-.marca {
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 1.25rem;
-  color: var(--tinta);
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  text-decoration: none;
-}
-
-.marca-icono {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
-  background: var(--senal);
-  display: grid;
-  place-items: center;
-}
-
-.barra .nav-link {
-  color: var(--tinta);
-  font-weight: 600;
-  padding: 1.25rem 0.9rem !important;
-  border-bottom: 3px solid transparent;
-}
-
-.barra .nav-link:hover {
-  color: var(--ruta);
-}
-
-.barra .nav-link.active {
-  border-bottom-color: var(--senal);
-}
-
-/* ---------- Pase de abordar  ---------- */
-.pase {
-  display: grid;
-  grid-template-columns: 1fr 150px;
-  background: var(--papel);
-  border-radius: var(--radio-pase);
-  position: relative;
-  color: var(--tinta);
-  text-decoration: none;
-  border: 1px solid var(--linea);
-  transition: border-color 0.15s;
-}
-
-a.pase:hover {
-  border-color: var(--tinta);
-  color: var(--tinta);
-}
-
-.pase-cuerpo {
-  padding: 1.25rem 1.5rem;
-  min-width: 0;
-}
-
-.pase-codigo {
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 3.5rem;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  margin: 0;
-}
-
-.pase-ciudad {
-  font-size: 1rem;
-  font-family: var(--fuente-texto);
-  font-weight: 600;
-  color: var(--lluvia);
-  margin: 0.25rem 0 1rem;
-  letter-spacing: 0;
-}
-
-.pase-datos {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1.75rem;
-  margin: 0;
-}
-
-.pase-datos dt {
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--lluvia);
-}
-
-.pase-datos dd {
-  margin: 0;
-  font-weight: 700;
-}
-
-/* Billete con perforado */
-.pase-talon {
-  border-left: 2px dashed var(--linea);
-  padding: 1.25rem 1rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  gap: 0.75rem;
-  position: relative;
-}
-
-.pase-talon::before,
-.pase-talon::after {
-  content: "";
-  position: absolute;
-  left: -13px;
-  width: 24px;
-  height: 24px;
-  border-radius: 50%;
-  background: var(--aluminio);
-  border: 1px solid var(--linea);
-}
-
-.pase-talon::before {
-  top: -13px;
-  clip-path: inset(50% 0 0 0);
-}
-
-.pase-talon::after {
-  bottom: -13px;
-  clip-path: inset(0 0 50% 0);
-}
-
-.pase-dias {
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 2rem;
-  line-height: 1;
-}
-
-.pase-dias small {
-  display: block;
-  font-family: var(--fuente-texto);
-  font-size: 0.8rem;
-  font-weight: 500;
-  color: var(--lluvia);
-}
-
-/* Pase grande del detalle */
-.pase-grande {
-  grid-template-columns: 1fr 38%;
-}
-
-.pase-grande .pase-codigo {
-  font-size: clamp(4rem, 12vw, 8rem);
-}
-
-.pase-grande .pase-talon {
-  padding: 0;
-  overflow: hidden;
-  border-top-right-radius: var(--radio-pase);
-  border-bottom-right-radius: var(--radio-pase);
-}
-
-.pase-grande .pase-talon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  background: var(--tinta);
-}
-
-/* ---------- Estados del viaje ---------- */
-.estado {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
-  width: fit-content;
-}
-
-.estado::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
-}
-
-.estado-planificado {
-  background: #e3eafd;
-  color: var(--ruta);
-}
-.estado-en-curso {
-  background: var(--senal-suave);
-  color: #8a6100;
-}
-.estado-finalizado {
-  background: #eceff3;
-  color: var(--lluvia);
-}
-.estado-cancelado {
-  background: #fbe7e6;
-  color: var(--alerta);
-}
-
-.categoria {
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--lluvia);
-}
-
-/* ---------- Plan: asientos ---------- */
-.asientos {
-  display: flex;
-  gap: 6px;
-}
-
-.asiento {
-  width: 22px;
-  height: 26px;
-  border-radius: 6px 6px 3px 3px;
-  border: 2px solid var(--tinta);
-}
-
-.asiento.ocupado {
-  background: var(--tinta);
-}
-
-/* ---------- Filtros por estado ---------- */
 .chips {
   display: flex;
   flex-wrap: wrap;
@@ -400,7 +200,6 @@ a.pase:hover {
   color: var(--papel);
 }
 
-/* ---------- Paneles ---------- */
 .panel {
   background: var(--papel);
   border: 1px solid var(--linea);
@@ -408,261 +207,6 @@ a.pase:hover {
   padding: 1.75rem;
 }
 
-/* ---------- Pestañas ---------- */
-.pestanas {
-  border-bottom: 2px solid var(--linea);
-  flex-wrap: nowrap;
-  overflow-x: auto;
-  white-space: nowrap;
-}
-
-.pestanas .nav-link {
-  color: var(--lluvia);
-  font-weight: 600;
-  border: 0;
-  border-bottom: 3px solid transparent;
-  margin-bottom: -2px;
-  padding: 0.75rem 0.25rem;
-  margin-right: 1.25rem;
-  background: none;
-}
-
-.pestanas .nav-link.active {
-  color: var(--tinta);
-  border-bottom-color: var(--senal);
-}
-
-/* ---------- Itinerario por día ---------- */
-/* Sugerencia de la IA: texto destacado + sello de pasaporte */
-.sugerencia {
-  display: grid;
-  grid-template-columns: 132px 1fr;
-  gap: 2rem;
-  align-items: center;
-  padding: 0.5rem 0 2rem;
-}
-
-.sello {
-  width: 132px;
-  height: 132px;
-  border-radius: 50%;
-  border: 3px solid var(--ruta);
-  outline: 1px solid var(--ruta);
-  outline-offset: -9px;
-  color: var(--ruta);
-  display: grid;
-  place-content: center;
-  text-align: center;
-  transform: rotate(-9deg);
-  line-height: 1.15;
-}
-
-.sello i {
-  font-size: 1.5rem;
-}
-
-.sello strong {
-  font-family: var(--fuente-titulos);
-  font-size: 1.05rem;
-  font-weight: 800;
-}
-
-.sello span {
-  font-size: 0.75rem;
-  font-weight: 600;
-}
-
-/* Sello para estimación histórica (viaje lejano) */
-.sello-historico {
-  color: var(--lluvia);
-  border-color: var(--lluvia);
-  outline-color: var(--lluvia);
-  border-style: dashed;
-}
-
-.sugerencia-texto {
-  font-size: 1.25rem;
-  line-height: 1.5;
-  max-width: 60ch;
-  margin: 0;
-}
-
-.sugerencia-fuente {
-  margin: 0.5rem 0 0;
-  font-size: 0.875rem;
-  color: var(--lluvia);
-}
-
-.dia {
-  display: grid;
-  grid-template-columns: 170px 1fr;
-  gap: 1.5rem;
-  padding: 1.25rem 0;
-  border-bottom: 1px solid var(--linea);
-}
-
-.dia:last-child {
-  border-bottom: 0;
-}
-
-.dia-numero {
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 1.5rem;
-  line-height: 1;
-}
-
-.dia-fecha {
-  color: var(--lluvia);
-  font-weight: 500;
-}
-
-.dia-clima {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  margin-top: 0.5rem;
-  font-weight: 600;
-}
-
-.dia-lluvioso .dia-clima {
-  color: var(--lluvia);
-}
-
-.lugares {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  align-content: start;
-}
-
-.lugar {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.55rem 0.9rem;
-  border-radius: var(--radio-control);
-  border: 2px solid var(--linea);
-  background: var(--papel);
-  font-weight: 600;
-}
-
-.lugar-techo {
-  border-color: var(--tinta);
-}
-
-.cargando {
-  padding: 3rem 0;
-  text-align: center;
-  color: var(--lluvia);
-}
-
-/* ---------- Login / registro ---------- */
-.auth {
-  min-height: 100vh;
-  display: grid;
-  grid-template-columns: 1.1fr 1fr;
-}
-
-.auth-tablero {
-  background: var(--tinta);
-  color: var(--papel);
-  padding: 3rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.auth-tablero h1 {
-  color: var(--senal);
-  font-size: clamp(2.5rem, 5vw, 4.25rem);
-  max-width: 12ch;
-}
-
-.tablero {
-  width: 100%;
-  border-collapse: collapse;
-  font-weight: 600;
-}
-
-.tablero td {
-  padding: 0.85rem 0.25rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.15);
-}
-
-.tablero .codigo {
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 1.6rem;
-  color: var(--senal);
-  width: 5.5rem;
-}
-
-.tablero .temp {
-  text-align: right;
-  color: #b9c3d6;
-}
-
-.auth-form {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem 1.25rem;
-}
-
-.auth-form form {
-  width: 100%;
-  max-width: 400px;
-}
-
-/* ---------- Planes ---------- */
-.plan {
-  height: 100%;
-}
-
-.plan .pase-talon {
-  justify-content: flex-start;
-}
-
-.plan-actual {
-  border: 2px solid var(--tinta);
-}
-
-.plan-lista {
-  list-style: none;
-  padding: 0;
-  margin: 1rem 0 1.5rem;
-}
-
-.plan-lista li {
-  display: flex;
-  gap: 0.6rem;
-  padding: 0.35rem 0;
-}
-
-.plan-lista .no {
-  color: var(--lluvia);
-  text-decoration: line-through;
-}
-
-/* ---------- Tabla de categorías ---------- */
-.tabla {
-  margin: 0;
-}
-
-.tabla th {
-  font-weight: 600;
-  color: var(--lluvia);
-  border-bottom-width: 2px;
-}
-
-.tabla td,
-.tabla th {
-  padding: 1rem 1.25rem;
-  background: transparent;
-}
-
-/* ---------- Paginación ---------- */
 .pagination {
   --bs-pagination-color: var(--tinta);
   --bs-pagination-border-color: var(--linea);
@@ -673,7 +217,6 @@ a.pase:hover {
   font-weight: 600;
 }
 
-/* ---------- Modales y alertas ---------- */
 .modal-content {
   border-radius: var(--radio-pase);
   border: 0;
@@ -690,62 +233,7 @@ a.pase:hover {
   color: #7d221d;
 }
 
-/* ---------- Responsive ---------- */
 @media (max-width: 767.98px) {
-  .auth {
-    grid-template-columns: 1fr;
-  }
-
-  .auth-tablero {
-    padding: 2rem 1.25rem;
-    gap: 1.5rem;
-  }
-
-  .auth-tablero .tablero {
-    display: none;
-  }
-
-  .pase,
-  .pase-grande {
-    grid-template-columns: 1fr;
-  }
-
-  .pase-talon {
-    border-left: 0;
-    border-top: 2px dashed var(--linea);
-    flex-direction: row;
-    align-items: center;
-  }
-
-  .pase-talon::before,
-  .pase-talon::after {
-    display: none;
-  }
-
-  .pase-grande .pase-talon {
-    height: 180px;
-    border-radius: 0 0 var(--radio-pase) var(--radio-pase);
-  }
-
-  .dia {
-    grid-template-columns: 1fr;
-    gap: 0.75rem;
-  }
-
-  .sugerencia {
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  .sello {
-    width: 112px;
-    height: 112px;
-  }
-
-  .sello strong {
-    font-size: 0.9rem;
-  }
-
   .panel {
     padding: 1.25rem;
   }
@@ -754,6 +242,5 @@ a.pase:hover {
 @media (prefers-reduced-motion: reduce) {
   * {
     transition: none !important;
-    animation: none !important;
   }
 }

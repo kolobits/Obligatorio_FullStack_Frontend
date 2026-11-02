@@ -1,6 +1,8 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { guardarCantidad } from "../store/slices/viajesSlice";
+import { Link } from "react-router";
+import { guardarCantidad } from "../../store/slices/viajesSlice";
+import "../perfil/styles/plan.css";
 
 const EncabezadoViajes = () => {
 
@@ -10,6 +12,9 @@ const EncabezadoViajes = () => {
   const cantidad = useSelector(state => state.viajes.cantidad);
 
   const lugares = [1, 2, 3, 4];
+
+
+  const llegoAlLimite = perfil && perfil.perfil === "plus" && cantidad >= 4;
 
  
   useEffect(() => {
@@ -43,7 +48,7 @@ const EncabezadoViajes = () => {
             </div>
             <span>
               Plan plus: usaste {cantidad} de {lugares.length} lugares.{" "}
-              <a href="#">Pasar a premium</a>
+              <Link to="/perfil">Pasar a premium</Link>
             </span>
           </div>
         )}
@@ -51,9 +56,18 @@ const EncabezadoViajes = () => {
           <span>Plan premium: tenés {cantidad} viajes.</span>
         )}
       </div>
-      <a href="#" className="btn btn-senal">
-        <i className="bi bi-plus-lg"></i> Nuevo viaje
-      </a>
+      {llegoAlLimite ? (
+        <div className="text-end">
+          <button type="button" className="btn btn-senal" disabled>
+            <i className="bi bi-plus-lg"></i> Nuevo viaje
+          </button>
+          <p className="small text-secondary mb-0 mt-1">Llegaste al límite del plan plus.</p>
+        </div>
+      ) : (
+        <Link to="/viajes/nuevo" className="btn btn-senal">
+          <i className="bi bi-plus-lg"></i> Nuevo viaje
+        </Link>
+      )}
     </div>
   );
 };

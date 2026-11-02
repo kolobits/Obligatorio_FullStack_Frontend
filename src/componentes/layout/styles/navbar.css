@@ -1,0 +1,39 @@
+.barra {
+  background: var(--papel);
+  border-bottom: 1px solid var(--linea);
+}
+
+.marca {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: var(--tinta);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+}
+
+.marca-icono {
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--senal);
+  display: grid;
+  place-items: center;
+}
+
+.barra .nav-link {
+  color: var(--tinta);
+  font-weight: 600;
+  padding: 1.25rem 0.9rem !important;
+  border-bottom: 3px solid transparent;
+}
+
+.barra .nav-link:hover {
+  color: var(--ruta);
+}
+
+.barra .nav-link.active {
+  border-bottom-color: var(--senal);
+}

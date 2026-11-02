@@ -1,0 +1,141 @@
+.auth {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.auth-tablero {
+  background: var(--tinta);
+  color: var(--papel);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.auth-tablero h1 {
+  color: var(--senal);
+  font-size: clamp(2.5rem, 5vw, 4.25rem);
+  max-width: 12ch;
+}
+
+.tablero {
+  width: 100%;
+  border-collapse: collapse;
+  font-weight: 600;
+}
+
+.tablero td {
+  padding: 0.85rem 0.25rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+.tablero .codigo {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: var(--senal);
+  width: 5.5rem;
+}
+
+.tablero .temp {
+  text-align: right;
+  color: #b9c3d6;
+}
+
+.auth-form {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.25rem;
+}
+
+.auth-form .form-control {
+  padding-top: 0.55rem;
+  padding-bottom: 0.55rem;
+}
+
+.auth-form .invalid-feedback {
+  margin-top: 0.2rem;
+  font-size: 0.85rem;
+}
+
+.auth-form form {
+  width: 100%;
+  max-width: 400px;
+}
+
+.tablero {
+  --alto: 2.1rem;
+}
+
+.flap-codigo {
+  display: inline-flex;
+  gap: 3px;
+}
+
+.flap-letra,
+.flap-texto {
+  display: block;
+  height: var(--alto);
+  line-height: var(--alto);
+  overflow: hidden;
+}
+
+.flap-letra {
+  position: relative;
+  width: 1.45rem;
+  border-radius: 5px;
+  background: #0b1528;
+  text-align: center;
+}
+
+.flap-letra::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: var(--tinta);
+}
+
+.flap-cinta {
+  display: flex;
+  flex-direction: column;
+  animation: flap-pasar 12s cubic-bezier(0.7, 0, 0.3, 1) infinite;
+}
+
+.flap-cinta > span {
+  display: block;
+  height: var(--alto);
+  white-space: nowrap;
+}
+
+@keyframes flap-pasar {
+  0%, 16%  { transform: translateY(0); }
+  20%, 36% { transform: translateY(calc(var(--alto) * -1)); }
+  40%, 56% { transform: translateY(calc(var(--alto) * -2)); }
+  60%, 76% { transform: translateY(calc(var(--alto) * -3)); }
+  80%, 96% { transform: translateY(calc(var(--alto) * -4)); }
+  100%     { transform: translateY(calc(var(--alto) * -5)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-cinta { animation-duration: 30s; }
+}
+
+@media (max-width: 767.98px) {
+  .auth {
+    grid-template-columns: 1fr;
+  }
+
+  .auth-tablero {
+    padding: 2rem 1.25rem;
+    gap: 1.5rem;
+  }
+
+  .auth-tablero .tablero {
+    display: none;
+  }
+}

@@ -1,0 +1,187 @@
+.pase {
+  display: grid;
+  grid-template-columns: 1fr 150px;
+  background: var(--papel);
+  border-radius: var(--radio-pase);
+  position: relative;
+  color: var(--tinta);
+  text-decoration: none;
+  border: 1px solid var(--linea);
+  transition: border-color 0.15s;
+}
+
+.pase-cuerpo {
+  padding: 1.25rem 1.5rem;
+  min-width: 0;
+}
+
+.pase-codigo {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 3.5rem;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  margin: 0;
+}
+
+.pase-ciudad {
+  font-size: 1rem;
+  font-family: var(--fuente-texto);
+  font-weight: 600;
+  color: var(--lluvia);
+  margin: 0.25rem 0 1rem;
+  letter-spacing: 0;
+}
+
+.pase-datos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.75rem;
+  margin: 0;
+}
+
+.pase-datos dt {
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--lluvia);
+}
+
+.pase-datos dd {
+  margin: 0;
+  font-weight: 700;
+}
+
+.pase-talon {
+  border-left: 2px dashed var(--linea);
+  padding: 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 0.75rem;
+  position: relative;
+}
+
+.pase-talon::before,
+.pase-talon::after {
+  content: "";
+  position: absolute;
+  left: -13px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--aluminio);
+  border: 1px solid var(--linea);
+}
+
+.pase-talon::before {
+  top: -13px;
+  clip-path: inset(50% 0 0 0);
+}
+
+.pase-talon::after {
+  bottom: -13px;
+  clip-path: inset(0 0 50% 0);
+}
+
+.pase-dias {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+}
+
+.pase-dias small {
+  display: block;
+  font-family: var(--fuente-texto);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: var(--lluvia);
+}
+
+.pase-grande {
+  grid-template-columns: 1fr 38%;
+}
+
+.pase-grande .pase-codigo {
+  font-size: clamp(4rem, 12vw, 8rem);
+}
+
+.pase-grande .pase-talon {
+  padding: 0;
+  overflow: hidden;
+  border-top-right-radius: var(--radio-pase);
+  border-bottom-right-radius: var(--radio-pase);
+}
+
+.pase-grande .pase-talon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: var(--tinta);
+}
+
+.estado {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.estado::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.estado-planificado {
+  background: #e3eafd;
+  color: var(--ruta);
+}
+.estado-en-curso {
+  background: var(--senal-suave);
+  color: #8a6100;
+}
+.estado-finalizado {
+  background: #eceff3;
+  color: var(--lluvia);
+}
+.estado-cancelado {
+  background: #fbe7e6;
+  color: var(--alerta);
+}
+
+.categoria {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--lluvia);
+}
+
+@media (max-width: 767.98px) {
+  .pase,
+  .pase-grande {
+    grid-template-columns: 1fr;
+  }
+
+  .pase-talon {
+    border-left: 0;
+    border-top: 2px dashed var(--linea);
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .pase-talon::before,
+  .pase-talon::after {
+    display: none;
+  }
+
+  .pase-grande .pase-talon {
+    height: 180px;
+    border-radius: 0 0 var(--radio-pase) var(--radio-pase);
+  }
+}

@@ -1,0 +1,143 @@
+.btn.btn-cargando,
+.btn.btn-cargando:disabled {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  opacity: 1;
+  cursor: progress;
+  background: var(--senal);
+  border-color: var(--senal);
+  color: var(--tinta);
+}
+
+.btn-cargando-avion {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: none;
+  border-radius: 50%;
+  border: 2px dashed rgba(19, 33, 60, 0.3);
+  animation: btn-cargando-girar 1.2s linear infinite;
+}
+
+.btn-cargando-avion svg {
+  position: absolute;
+  top: -1px;
+  left: 50%;
+  width: 13px;
+  height: 13px;
+  transform: translate(-50%, -50%) rotate(90deg);
+  fill: var(--tinta);
+}
+
+@keyframes btn-cargando-girar {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn-cargando-avion {
+    animation-duration: 3s;
+  }
+}
+
+.cargando {
+  padding: 3rem 0;
+  text-align: center;
+  color: var(--lluvia);
+}
+
+
+.vuelta-mundo {
+  --tamano: 96px;
+  --orbita: var(--linea);
+  position: relative;
+  width: var(--tamano);
+  height: var(--tamano);
+  flex: none;
+}
+
+.vuelta-mundo-orbita {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px dashed var(--orbita);
+}
+
+.vuelta-mundo-globo {
+  position: absolute;
+  inset: 21%;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--papel);
+  border: 2px solid var(--tinta);
+}
+
+.vuelta-mundo-meridiano {
+  position: absolute;
+  inset: -2px;
+  border-radius: 50%;
+  border: 1.5px solid var(--tinta);
+  opacity: 0.35;
+  animation: vuelta-mundo-meridiano 4.5s linear infinite;
+}
+.vuelta-mundo-meridiano:nth-child(2) { animation-delay: -1.5s; }
+.vuelta-mundo-meridiano:nth-child(3) { animation-delay: -3s; }
+
+.vuelta-mundo-paralelo {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 1.5px;
+  background: var(--tinta);
+  opacity: 0.25;
+}
+.vuelta-mundo-paralelo:nth-child(4) { top: 28%; }
+.vuelta-mundo-paralelo:nth-child(5) { top: 50%; height: 2px; background: var(--senal); opacity: 1; }
+.vuelta-mundo-paralelo:nth-child(6) { top: 72%; }
+
+.vuelta-mundo-giro {
+  position: absolute;
+  inset: 0;
+  animation: vuelta-mundo-girar 2.4s linear infinite;
+}
+
+.vuelta-mundo-giro::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, transparent 0 72%, var(--senal) 100%);
+  -webkit-mask: radial-gradient(circle, transparent calc(50% - 2px), #000 calc(50% - 2px), #000 50%, transparent 50%);
+          mask: radial-gradient(circle, transparent calc(50% - 2px), #000 calc(50% - 2px), #000 50%, transparent 50%);
+}
+
+.vuelta-mundo-avion {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 28%;
+  height: 28%;
+  transform: translate(-50%, -50%) rotate(90deg);
+  fill: var(--senal);
+  stroke: var(--tinta);
+  stroke-width: 1.2;
+  stroke-linejoin: round;
+}
+
+@keyframes vuelta-mundo-girar {
+  to { transform: rotate(360deg); }
+}
+@keyframes vuelta-mundo-meridiano {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(180deg); }
+}
+
+.vuelta-mundo.sobre-oscuro { --orbita: rgba(255, 255, 255, 0.22); }
+
+@media (prefers-reduced-motion: reduce) {
+  .vuelta-mundo-giro { animation-duration: 8s; }
+  .vuelta-mundo-meridiano { animation: none; }
+}

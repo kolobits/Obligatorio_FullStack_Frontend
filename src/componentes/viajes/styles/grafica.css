@@ -1,0 +1,75 @@
+.grafica {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 240px;
+  gap: 2rem;
+  align-items: center;
+}
+
+.grafica-texto {
+  min-width: 0;
+}
+
+.grafica-leyenda {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.6rem 2rem;
+  max-width: 420px;
+}
+
+.grafica-leyenda li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+}
+
+.grafica-leyenda strong {
+  margin-left: auto;
+  font-family: var(--fuente-titulos);
+  font-size: 1.15rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.grafica-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex: none;
+}
+
+.grafica-dona {
+  position: relative;
+  height: 220px;
+  display: grid;
+  place-items: center;
+}
+
+.grafica-centro {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.grafica-centro strong {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 2.4rem;
+  line-height: 1;
+}
+
+.grafica-centro span {
+  color: var(--lluvia);
+  font-weight: 500;
+}
+
+@media (max-width: 767.98px) {
+  .grafica {
+    grid-template-columns: 1fr;
+  }
+}

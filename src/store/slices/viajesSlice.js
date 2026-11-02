@@ -32,10 +32,15 @@ export const viajesSlice = createSlice({
         },
         cambiarPagina: (state, action) => {
             state.page = action.payload
+        },
+        eliminarViaje: (state, action) => {
+            state.listaViajes = state.listaViajes.filter(viaje => viaje._id !== action.payload)
+            state.total = state.total - 1
+            state.cantidad = state.cantidad - 1
         }
     }
 })
 
-export const { guardarViajes, guardarCantidad, cambiarEstado, cambiarCategoria, cambiarPagina } = viajesSlice.actions
+export const { guardarViajes, guardarCantidad, cambiarEstado, cambiarCategoria, cambiarPagina, eliminarViaje } = viajesSlice.actions
 
 export default viajesSlice.reducer

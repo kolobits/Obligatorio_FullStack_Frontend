@@ -1,7 +1,9 @@
 import { useEffect } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
-import { borrarToken, guardarPerfil } from "../store/slices/usuarioSlice";
+import { borrarToken, guardarPerfil } from "../../store/slices/usuarioSlice";
+import { guardarCategorias } from "../../store/slices/categoriasSlice";
+import "./styles/navbar.css";
 
 const Navbar = () => {
 
@@ -30,9 +32,19 @@ const Navbar = () => {
           if (datos.username) {
             dispatch(guardarPerfil(datos));
           } else {
-            // El token venció o no es válido: cerramos la sesión
             logout();
           }
+        })
+
+      fetch("https://obligatorio1-fullstack.vercel.app/v1/categorias", {
+        headers: {
+          'Authorization': localStorage.getItem("token"),
+        }
+      })
+        .then(r => r.json())
+        .then(datos => {
+          console.log(datos);
+          dispatch(guardarCategorias(datos));
         })
     }
   }, [])

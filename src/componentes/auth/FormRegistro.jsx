@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
-import { guardarToken } from "../store/slices/usuarioSlice";
+import { guardarToken } from "../../store/slices/usuarioSlice";
 import registroSchema from "./validations/registroSchema";
 import { Link, useNavigate } from "react-router";
+import BotonCargando from "../cargando/BotonCargando";
 
 const FormRegistro = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorRegistro, setErrorRegistro] = useState("");
+  const [cargando, setCargando] = useState(false);
 
   const {
     control,
@@ -52,6 +54,7 @@ const FormRegistro = () => {
   }
 
   const onSubmit = data => {
+    setCargando(true);
     let objRegistro = {
       "name": data.name,
       "username": data.username,
@@ -74,8 +77,10 @@ const FormRegistro = () => {
           ingresar(data.username, data.password);
           reset();
         } else if (datos.message) {
+          setCargando(false);
           setErrorRegistro(datos.message);
         } else {
+          setCargando(false);
           setErrorRegistro(datos.error);
         }
       })
@@ -85,9 +90,9 @@ const FormRegistro = () => {
     <section className="auth-form">
       <form noValidate>
         <h2 className="mb-1">Creá tu cuenta</h2>
-        <p className="text-secondary mb-4">Arrancás en el plan plus, con lugar para 4 viajes.</p>
+        <p className="text-secondary mb-3">Arrancás en el plan plus, con lugar para 4 viajes.</p>
 
-        <div className="mb-3">
+        <div className="mb-2">
           <label htmlFor="name" className="form-label">Nombre</label>
           <Controller
             control={control}
@@ -104,7 +109,7 @@ const FormRegistro = () => {
           {errors.name && <div className="invalid-feedback">{errors.name.message}</div>}
         </div>
 
-        <div className="mb-3">
+        <div className="mb-2">
           <label htmlFor="username" className="form-label">Usuario</label>
           <Controller
             control={control}
@@ -121,7 +126,7 @@ const FormRegistro = () => {
           {errors.username && <div className="invalid-feedback">{errors.username.message}</div>}
         </div>
 
-        <div className="mb-3">
+        <div className="mb-2">
           <label htmlFor="email" className="form-label">Email</label>
           <Controller
             control={control}
@@ -138,7 +143,7 @@ const FormRegistro = () => {
           {errors.email && <div className="invalid-feedback">{errors.email.message}</div>}
         </div>
 
-        <div className="mb-3">
+        <div className="mb-2">
           <label htmlFor="password" className="form-label">Contraseña</label>
           <Controller
             control={control}
@@ -155,7 +160,7 @@ const FormRegistro = () => {
           {errors.password && <div className="invalid-feedback">{errors.password.message}</div>}
         </div>
 
-        <div className="mb-3">
+        <div className="mb-2">
           <label htmlFor="confirmPassword" className="form-label">Repetir contraseña</label>
           <Controller
             control={control}
@@ -173,14 +178,14 @@ const FormRegistro = () => {
         </div>
 
         {errorRegistro && <div className="alert alert-danger" role="alert">{errorRegistro}</div>}
-
-        <button
-          type="button"
-          className="btn btn-senal w-100 mt-2"
+        <BotonCargando
+          texto="Crear cuenta"
+          textoCargando="Creando tu cuenta…"
+          cargando={cargando}
           onClick={handleSubmit(onSubmit)}
-          disabled={!isValid}>
-          Crear cuenta
-        </button>
+          deshabilitado={!isValid}
+          clases="w-100 mt-2"
+        />
         <p className="mt-4 mb-0">¿Ya tenés cuenta? <Link to="/">Ingresá</Link></p>
       </form>
     </section>

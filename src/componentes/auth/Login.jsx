@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import PanelTablero from './PanelTablero';
 import FormLogin from './FormLogin';
+import "./styles/auth.css";
 
 const Login = () => {
 

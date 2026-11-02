@@ -1,0 +1,15 @@
+.tabla {
+  margin: 0;
+}
+
+.tabla th {
+  font-weight: 600;
+  color: var(--lluvia);
+  border-bottom-width: 2px;
+}
+
+.tabla td,
+.tabla th {
+  padding: 1rem 1.25rem;
+  background: transparent;
+}
