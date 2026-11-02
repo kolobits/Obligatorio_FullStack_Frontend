@@ -4,10 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import { guardarToken } from "../store/slices/usuarioSlice";
 import registroSchema from "./validations/registroSchema";
+import { Link, useNavigate } from "react-router";
 
 const FormRegistro = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [errorRegistro, setErrorRegistro] = useState("");
 
   const {
@@ -45,6 +47,7 @@ const FormRegistro = () => {
         console.log(datos);
         localStorage.setItem("token", datos.token);
         dispatch(guardarToken(datos.token));
+        navigate("/dashboard"); 
       })
   }
 
@@ -178,7 +181,7 @@ const FormRegistro = () => {
           disabled={!isValid}>
           Crear cuenta
         </button>
-        <p className="mt-4 mb-0">¿Ya tenés cuenta? <a href="#">Ingresá</a></p>
+        <p className="mt-4 mb-0">¿Ya tenés cuenta? <Link to="/">Ingresá</Link></p>
       </form>
     </section>
   );

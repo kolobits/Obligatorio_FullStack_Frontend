@@ -1,3 +1,5 @@
+import { Link } from "react-router";
+
 const PanelTablero = () => {
   const destinos = [
     { codigo: "MAD", ciudad: "Madrid", icono: "bi bi-cloud-rain", temp: 12 },
@@ -8,12 +10,12 @@ const PanelTablero = () => {
 
   return (
     <section className="auth-tablero">
-      <a className="marca text-white" href="#">
+      <Link className="marca text-white" to="/">
         <span className="marca-icono text-dark">
           <i className="bi bi-airplane-fill"></i>
         </span>
         Planificador
-      </a>
+      </Link>
       <h1>¿A dónde vas ahora?</h1>
       <table className="tablero" aria-label="Ejemplos de destinos">
         <tbody>

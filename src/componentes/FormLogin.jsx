@@ -4,10 +4,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useDispatch } from "react-redux";
 import { guardarToken } from "../store/slices/usuarioSlice";
 import loginSchema from "./validations/loginSchema";
+import { Link, useNavigate } from "react-router";
 
 const FormLogin = () => {
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();   
   const [errorLogin, setErrorLogin] = useState("");
 
   const {
@@ -38,6 +40,7 @@ const FormLogin = () => {
           localStorage.setItem("token", datos.token);
           dispatch(guardarToken(datos.token));
           setErrorLogin("");
+          navigate("/dashboard"); 
         } else if (datos.message) {
           setErrorLogin("El usuario o la contraseña no son correctos.");
         } else {
@@ -97,7 +100,7 @@ const FormLogin = () => {
           disabled={!isValid}>
           Ingresar
         </button>
-        <p className="mt-4 mb-0">¿Todavía no tenés cuenta? <a href="#">Creá una</a></p>
+        <p className="mt-4 mb-0">¿Todavía no tenés cuenta? <Link to="/registro">Creá una</Link>  </p>
       </form>
     </section>
   );
