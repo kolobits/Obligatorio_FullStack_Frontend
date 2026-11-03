@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import VueltaAlMundo from "../cargando/VueltaAlMundo";
+import ClimaPorDia from "./ClimaPorDia";
 
 const Itinerario = ({ id }) => {
 
@@ -31,16 +32,6 @@ const Itinerario = ({ id }) => {
     return new Date(fecha)
       .toLocaleDateString("es-UY", { weekday: "long", day: "numeric", month: "short", timeZone: "UTC" })
       .replace(".", "");
-  };
-
-  const iconoClima = (codigo) => {
-    if (codigo === 0) return "bi bi-sun";
-    if (codigo <= 3) return "bi bi-cloud-sun";
-    if (codigo <= 48) return "bi bi-cloud-fog";
-    if (codigo <= 67) return "bi bi-cloud-rain-heavy";
-    if (codigo <= 77) return "bi bi-snow";
-    if (codigo <= 82) return "bi bi-cloud-rain-heavy";
-    return "bi bi-cloud-lightning-rain";
   };
 
   const esBajoTecho = (tipo) => tipo === "entertainment.museum" || tipo === "entertainment.culture";
@@ -86,26 +77,25 @@ const Itinerario = ({ id }) => {
           <p className="sugerencia-fuente">
             {esPronostico
               ? "Sugerencia generada con IA a partir del pronóstico de Open-Meteo."
-              : `Estimación a partir de ${plan.resumenHistorico.aniosAnalizados} años de historial: máxima de ${plan.resumenHistorico.temperaturaMaximaPromedio}°, mínima de ${plan.resumenHistorico.temperaturaMinimaPromedio}° y ${plan.resumenHistorico.probabilidadDeLluvia}% de días con lluvia.`}
+              : `Estimación a partir de ${plan.resumenHistorico.aniosAnalizados} años de historial, porque el viaje todavía está lejos para tener pronóstico.`}
           </p>
         </div>
       </div>
+
+      <ClimaPorDia plan={plan} />
 
       <div className="row g-4">
         <div className="col-lg-9">
           <ol className="list-unstyled panel py-2 mb-0">
             {dias.map((dia, i) => {
-              const posicion = esPronostico ? plan.pronostico.time.indexOf(dia.fecha) : -1;
               return (
                 <li key={dia.fecha} className={dia.lluvioso ? "dia dia-lluvioso" : "dia"}>
                   <div>
                     <div className="dia-numero">Día {i + 1}</div>
                     <div className="dia-fecha">{formatearDia(dia.fecha)}</div>
-                    {posicion !== -1 && (
+                    {dia.lluvioso && (
                       <div className="dia-clima">
-                        <i className={iconoClima(plan.pronostico.weathercode[posicion])}></i>
-                        {Math.round(plan.pronostico.temperature_2m_max[posicion])}° / {Math.round(plan.pronostico.temperature_2m_min[posicion])}°
-                        {dia.lluvioso && ", lluvia"}
+                        <i className="bi bi-cloud-rain-heavy"></i> Día de lluvia
                       </div>
                     )}
                   </div>

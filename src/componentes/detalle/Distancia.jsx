@@ -4,6 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import distanciaSchema from "./validations/distanciaSchema";
 import BotonCargando from "../cargando/BotonCargando";
+import OpcionViaje from "./OpcionViaje";
 
 const Distancia = ({ id }) => {
 
@@ -35,7 +36,7 @@ const Distancia = ({ id }) => {
       .then(datos => {
         console.log(datos);
         setCargando(false);
-        if (datos.distanciaKm !== undefined) {
+        if (datos.recomendado) {
           setResultado(datos);
           setErrorDistancia("");
         } else {
@@ -45,8 +46,52 @@ const Distancia = ({ id }) => {
       })
   }
 
+  const formatearDuracion = (horas) => {
+    const minutosTotales = Math.round(horas * 60);
+    const h = Math.floor(minutosTotales / 60);
+    const min = minutosTotales % 60;
+    if (h === 0) return `${min} min`;
+    if (min === 0) return `${h} h`;
+    return `${h} h ${min} min`;
+  };
+
+  const ciudad = (nombre) => nombre.split(",")[0];
+
+  let opcionAvion = null;
+  let opcionAuto = null;
+
+  if (resultado) {
+    const ambas = resultado.avion !== null && resultado.auto !== null;
+
+    if (resultado.avion) {
+      opcionAvion = (
+        <OpcionViaje
+          titulo="En avión"
+          icono="bi bi-airplane"
+          datos={resultado.avion}
+          detalle="vuelo directo estimado"
+          recomendada={ambas && resultado.recomendado === "avion"}
+          formatearDuracion={formatearDuracion}
+        />
+      );
+    }
+
+    if (resultado.auto) {
+      opcionAuto = (
+        <OpcionViaje
+          titulo="En auto"
+          icono="bi bi-car-front"
+          datos={resultado.auto}
+          detalle="por ruta"
+          recomendada={ambas && resultado.recomendado === "auto"}
+          formatearDuracion={formatearDuracion}
+        />
+      );
+    }
+  }
+
   return (
-    <div className="panel" style={{ maxWidth: "640px" }}>
+    <div className="panel" style={{ maxWidth: "720px" }}>
       <form className="row g-2 align-items-start mb-4" noValidate>
         <div className="col-sm-8">
           <label htmlFor="origen" className="form-label">¿Desde qué ciudad salís?</label>
@@ -76,17 +121,30 @@ const Distancia = ({ id }) => {
 
       {resultado && (
         <>
-          <p className="text-secondary mb-3">{resultado.origen} <i className="bi bi-arrow-right"></i> {resultado.destino}</p>
-          <div className="d-flex flex-wrap gap-5">
-            <div>
-              <p className="text-secondary mb-0">Distancia</p>
-              <p className="titulo fs-2 mb-0">{resultado.distanciaKm.toLocaleString("es-UY")} km</p>
+          <div className="trayecto">
+            <div className="trayecto-punto">
+              <span className="trayecto-codigo">{ciudad(resultado.origen).slice(0, 3).toUpperCase()}</span>
+              <span className="trayecto-ciudad">{ciudad(resultado.origen)}</span>
             </div>
-            <div>
-              <p className="text-secondary mb-0">En auto</p>
-              <p className="titulo fs-2 mb-0">{resultado.duracionHoras.toLocaleString("es-UY")} h</p>
+            <div className="trayecto-linea" aria-hidden="true">
+              <i className={resultado.recomendado === "auto" ? "bi bi-car-front-fill trayecto-auto" : "bi bi-airplane-fill"}></i>
+            </div>
+            <div className="trayecto-punto text-end">
+              <span className="trayecto-codigo">{ciudad(resultado.destino).slice(0, 3).toUpperCase()}</span>
+              <span className="trayecto-ciudad">{ciudad(resultado.destino)}</span>
             </div>
           </div>
+          <p className="text-secondary small mb-3">{resultado.lineaRectaKm.toLocaleString("es-UY")} km en línea recta</p>
+
+          <div className="row g-3">
+            {resultado.recomendado === "auto" ? <>{opcionAuto}{opcionAvion}</> : <>{opcionAvion}{opcionAuto}</>}
+          </div>
+
+          {resultado.avion && (
+            <p className="small text-secondary mt-3 mb-0">
+              El tiempo en avión es una estimación para un vuelo directo. Con escalas puede ser bastante más.
+            </p>
+          )}
         </>
       )}
     </div>
