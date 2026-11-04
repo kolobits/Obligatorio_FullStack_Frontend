@@ -18,68 +18,53 @@ const ClimaPorDia = ({ plan }) => {
 
   if (plan.tipo !== "pronostico") {
     const h = plan.resumenHistorico;
-    const gotas = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9];
-    const diasConLluvia = Math.round(h.probabilidadDeLluvia / 10);
-
     return (
-      <div className="panel clima-historico">
-        <div>
-          <p className="clima-rotulo">Temperatura habitual</p>
-          <p className="clima-rango">
-            <span>{Math.round(h.temperaturaMinimaPromedio)}°</span>
-            <span className="clima-rango-linea"></span>
-            <span>{Math.round(h.temperaturaMaximaPromedio)}°</span>
-          </p>
+      <div className="clima-historico">
+        <div className="clima-tarjeta" style={{ animationDelay: "0s" }}>
+          <span className="clima-etiqueta">Máxima promedio</span>
+          <i className="bi bi-thermometer-sun clima-icono clima-sol"></i>
+          <strong className="clima-temp">{Math.round(h.temperaturaMaximaPromedio)}°</strong>
         </div>
-        <div>
-          <p className="clima-rotulo">Llueve {h.probabilidadDeLluvia}% de los días</p>
-          <div className="clima-gotas" aria-hidden="true">
-            {gotas.map(i => (
-              <i key={i} className={i < diasConLluvia ? "bi bi-droplet-fill" : "bi bi-droplet"}></i>
-            ))}
-          </div>
+        <div className="clima-tarjeta" style={{ animationDelay: "0.1s" }}>
+          <span className="clima-etiqueta">Mínima promedio</span>
+          <i className="bi bi-thermometer-snow clima-icono clima-nube"></i>
+          <strong className="clima-temp">{Math.round(h.temperaturaMinimaPromedio)}°</strong>
+        </div>
+        <div className="clima-tarjeta" style={{ animationDelay: "0.2s" }}>
+          <span className="clima-etiqueta">Días con lluvia</span>
+          <i className="bi bi-umbrella-fill clima-icono clima-lluvia"></i>
+          <strong className="clima-temp">{h.probabilidadDeLluvia}%</strong>
         </div>
       </div>
     );
   }
 
   const p = plan.pronostico;
-  const maximaDelViaje = Math.max(...p.temperature_2m_max);
-  const minimaDelViaje = Math.min(...p.temperature_2m_min);
-  const rango = maximaDelViaje - minimaDelViaje || 1;
 
   return (
-    <div className="panel clima-panel">
-      <div className="clima-dias" style={{ gridTemplateColumns: `repeat(${p.time.length}, minmax(64px, 1fr))` }}>
-        {p.time.map((fecha, i) => {
-          const clima = climaDe(p.weathercode[i]);
-          const max = p.temperature_2m_max[i];
-          const min = p.temperature_2m_min[i];
-          const lluvia = p.precipitation_sum[i];
-          const [dia, fechaCorta] = partesFecha(fecha);
-          const arriba = ((maximaDelViaje - max) / rango) * 100;
-          const alto = Math.max(((max - min) / rango) * 100, 6);
-
-          return (
-            <div key={fecha} className={lluvia >= 1 ? "clima-dia clima-dia-lluvia" : "clima-dia"}>
-              <span className="clima-dia-nombre">{dia}</span>
-              <span className="clima-dia-fecha">{fechaCorta}</span>
-              <i className={`${clima.icono} clima-icono clima-${clima.animacion}`} title={clima.texto}></i>
-              <span className="clima-max">{Math.round(max)}°</span>
-              <div className="clima-pista">
-                <div
-                  className="clima-barra"
-                  style={{ top: `${arriba}%`, height: `${alto}%`, animationDelay: `${i * 0.06}s` }}
-                ></div>
-              </div>
-              <span className="clima-min">{Math.round(min)}°</span>
-              <span className="clima-mm">
-                {lluvia >= 1 ? <><i className="bi bi-droplet-fill"></i> {Math.round(lluvia)} mm</> : "—"}
-              </span>
-            </div>
-          );
-        })}
-      </div>
+    <div className="clima-dias">
+      {p.time.map((fecha, i) => {
+        const clima = climaDe(p.weathercode[i]);
+        const lluvia = p.precipitation_sum[i];
+        const [dia, fechaCorta] = partesFecha(fecha);
+        return (
+          <div
+            key={fecha}
+            className={lluvia >= 1 ? "clima-tarjeta clima-lluviosa" : "clima-tarjeta"}
+            style={{ animationDelay: `${i * 0.09}s` }}
+          >
+            <span className="clima-etiqueta">Día {i + 1} · {dia}</span>
+            <span className="clima-fecha">{fechaCorta}</span>
+            <i className={`${clima.icono} clima-icono clima-${clima.animacion}`} title={clima.texto}></i>
+            <strong className="clima-temp">
+              {Math.round(p.temperature_2m_max[i])}°<small>/ {Math.round(p.temperature_2m_min[i])}°</small>
+            </strong>
+            <span className="clima-lluvia-mm">
+              <i className="bi bi-droplet-fill"></i> {lluvia >= 1 ? `${Math.round(lluvia)} mm` : "Sin lluvia"}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 };

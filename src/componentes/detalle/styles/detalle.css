@@ -286,108 +286,84 @@
   margin: 0;
 }
 
-.clima-panel {
-  padding: 1rem 0.75rem;
-  margin-bottom: 1.75rem;
-  overflow-x: auto;
-  scrollbar-width: thin;
-}
-
-.clima-dias {
+.clima-dias,
+.clima-historico {
   display: grid;
-  gap: 0.25rem;
+  grid-template-columns: repeat(auto-fill, minmax(132px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 1.75rem;
 }
 
-.clima-dia {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 0.6rem 0.25rem 0.7rem;
+.clima-historico {
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  max-width: 640px;
+}
+
+.clima-tarjeta {
+  display: grid;
+  justify-items: start;
+  gap: 0.15rem;
+  padding: 0.9rem 1rem 1rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-top: 4px solid var(--senal);
   border-radius: var(--radio-control);
-  text-align: center;
+  animation: clima-entrar 0.5s cubic-bezier(0.2, 0.7, 0.3, 1) both;
 }
 
-.clima-dia-lluvia {
-  background: #eef2fd;
+.clima-lluviosa {
+  border-top-color: var(--ruta);
+  background: #f3f6ff;
 }
 
-.clima-dia-nombre {
+.clima-etiqueta {
   font-size: 0.75rem;
   font-weight: 700;
+  letter-spacing: 0.04em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
   color: var(--lluvia);
 }
 
-.clima-dia-fecha {
-  font-size: 0.85rem;
+.clima-fecha {
   font-weight: 600;
-  white-space: nowrap;
 }
 
 .clima-icono {
+  font-size: 2rem;
+  line-height: 1;
+  margin: 0.5rem 0 0.35rem;
   display: inline-block;
+}
+
+.clima-temp {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
   font-size: 1.6rem;
   line-height: 1;
-  margin: 0.7rem 0 0.6rem;
-}
-
-.clima-max,
-.clima-min {
-  font-family: var(--fuente-titulos);
   font-variant-numeric: tabular-nums;
-  line-height: 1;
 }
 
-.clima-max {
-  font-weight: 800;
-  font-size: 1.15rem;
-}
-
-.clima-min {
-  font-weight: 600;
+.clima-temp small {
   font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--lluvia);
+  margin-left: 0.2rem;
+}
+
+.clima-lluvia-mm {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  font-weight: 600;
   color: var(--lluvia);
 }
 
-.clima-pista {
-  position: relative;
-  width: 6px;
-  height: 84px;
-  margin: 0.45rem 0;
-  border-radius: 999px;
-  background: var(--aluminio);
-}
-
-.clima-barra {
-  position: absolute;
-  left: 0;
-  right: 0;
-  border-radius: 999px;
-  background: var(--tinta);
-  transform-origin: bottom;
-  animation: clima-crecer 0.6s cubic-bezier(0.2, 0.7, 0.3, 1) both;
-}
-
-.clima-dia-lluvia .clima-barra {
-  background: var(--ruta);
-}
-
-.clima-mm {
-  margin-top: 0.6rem;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--linea);
-  white-space: nowrap;
-}
-
-.clima-dia-lluvia .clima-mm {
+.clima-lluviosa .clima-lluvia-mm {
   color: var(--ruta);
 }
 
 .clima-sol {
   color: #f0a800;
-  animation: clima-girar 16s linear infinite;
+  animation: clima-girar 14s linear infinite;
 }
 
 .clima-nube {
@@ -400,56 +376,14 @@
   animation: clima-caer 1.6s ease-in-out infinite;
 }
 
-.clima-historico {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1.5rem 2.5rem;
-  max-width: 640px;
-  margin-bottom: 1.75rem;
-}
-
-.clima-rotulo {
-  font-size: 0.85rem;
-  color: var(--lluvia);
-  margin-bottom: 0.5rem;
-}
-
-.clima-rango {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin: 0;
-  font-family: var(--fuente-titulos);
-  font-weight: 800;
-  font-size: 1.6rem;
-  line-height: 1;
-}
-
-.clima-rango-linea {
-  flex: 1;
-  max-width: 120px;
-  height: 6px;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--ruta), var(--senal));
-}
-
-.clima-gotas {
-  display: flex;
-  gap: 0.3rem;
-  font-size: 1.15rem;
-  color: var(--ruta);
-}
-
-.clima-gotas .bi-droplet {
-  color: var(--linea);
-}
-
-@keyframes clima-crecer {
+@keyframes clima-entrar {
   from {
-    transform: scaleY(0);
+    opacity: 0;
+    transform: translateY(14px);
   }
   to {
-    transform: scaleY(1);
+    opacity: 1;
+    transform: none;
   }
 }
 
@@ -461,16 +395,16 @@
 
 @keyframes clima-flotar {
   0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(3px); }
+  50% { transform: translateX(4px); }
 }
 
 @keyframes clima-caer {
   0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(2px); }
+  50% { transform: translateY(3px); }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .clima-barra,
+  .clima-tarjeta,
   .clima-sol,
   .clima-nube,
   .clima-lluvia {
