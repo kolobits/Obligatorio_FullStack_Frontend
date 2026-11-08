@@ -3,25 +3,28 @@ import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { borrarToken, guardarPerfil } from "../../store/slices/usuarioSlice";
 import { guardarCategorias } from "../../store/slices/categoriasSlice";
+import Avatar from "../perfil/Avatar";
 import "./styles/navbar.css";
+import { vaciarViajes } from "../../store/slices/viajesSlice";
 
 const Navbar = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const perfil = useSelector(state => state.usuario.perfil);
 
-  const logout = () => {
-    localStorage.clear();
-    dispatch(borrarToken());
-    navigate("/");
-  }
+ const logout = () => {
+  localStorage.clear();
+  dispatch(borrarToken());
+  dispatch(vaciarViajes());
+  navigate("/");
+}
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       navigate("/");
     } else {
-      fetch("https://obligatorio1-fullstack.vercel.app/v1/usuarios/perfil", {
+      fetch(`${API_BASE_URL}/v1/usuarios/perfil`, {
         headers: {
           'Authorization': localStorage.getItem("token"),
         }
@@ -36,7 +39,7 @@ const Navbar = () => {
           }
         })
 
-      fetch("https://obligatorio1-fullstack.vercel.app/v1/categorias", {
+      fetch(`${API_BASE_URL}/v1/categorias`, {
         headers: {
           'Authorization': localStorage.getItem("token"),
         }
@@ -66,7 +69,11 @@ const Navbar = () => {
               <li className="nav-item"><NavLink className="nav-link" to="/categorias">Categorías</NavLink></li>
             </ul>
             <ul className="navbar-nav">
-              <li className="nav-item"><NavLink className="nav-link" to="/perfil"><i className="bi bi-person-circle"></i> {perfil && perfil.username}</NavLink></li>
+              <li className="nav-item">
+                <NavLink className="nav-link nav-usuario" to="/perfil">
+                  <Avatar perfil={perfil} tamano={28} /> {perfil && perfil.username}
+                </NavLink>
+              </li>
               <li className="nav-item"><button type="button" className="nav-link" onClick={logout}>Cerrar sesión</button></li>
             </ul>
           </div>
@@ -76,5 +83,7 @@ const Navbar = () => {
     </div>
   );
 };
+
+
 
 export default Navbar;

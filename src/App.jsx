@@ -10,6 +10,8 @@ import Dashboard from "./componentes/viajes/Dashboard";
 import FormViaje from "./componentes/viajes/FormViaje";
 import Perfil from "./componentes/perfil/Perfil";
 import ViajeDetalle from "./componentes/detalle/ViajeDetalle";
+import Categorias from "./componentes/categorias/Categorias";
+import { Toaster } from "react-hot-toast";
 
 const App = () => {
   return (
@@ -24,9 +26,20 @@ const App = () => {
             <Route path="/viajes/:id" element={<ViajeDetalle />} />
             <Route path="/viajes/:id/editar" element={<FormViaje />} />
             <Route path="/perfil" element={<Perfil />} />
+            <Route path="/categorias" element={<Categorias />} />
           </Route>
         </Routes>
       </BrowserRouter>
+      <Toaster
+        position="bottom-right"
+        toastOptions={{
+          style: {
+            fontFamily: "var(--fuente-texto)",
+            color: "var(--tinta)",
+            borderRadius: "10px",
+          },
+        }}
+      />
     </Provider>
   );
 };

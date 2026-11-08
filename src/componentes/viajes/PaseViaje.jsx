@@ -13,7 +13,7 @@ const PaseViaje = ({
   estado,
   nombreCategoria,
 }) => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const [confirmando, setConfirmando] = useState(false);
@@ -40,7 +40,7 @@ const PaseViaje = ({
     (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24) + 1;
 
   const borrar = () => {
-    fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${_id}`, {
+    fetch(`${API_BASE_URL}/v1/viajes/${_id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': token,

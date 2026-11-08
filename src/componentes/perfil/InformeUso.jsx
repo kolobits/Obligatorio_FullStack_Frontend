@@ -5,7 +5,7 @@ import "../viajes/styles/pase.css";
 import "./styles/plan.css";
 
 const InformeUso = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const perfil = useSelector(state => state.usuario.perfil);
@@ -16,7 +16,7 @@ const InformeUso = () => {
 
   
   useEffect(() => {
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/viajes?limit=1", {
+    fetch(`${API_BASE_URL}/v1/viajes?limit=1`, {
       headers: {
         'Authorization': token,
       }

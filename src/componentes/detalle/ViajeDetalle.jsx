@@ -11,7 +11,7 @@ import "../viajes/styles/pase.css";
 import "./styles/detalle.css";
 
 const ViajeDetalle = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const ViajeDetalle = () => {
   const [confirmando, setConfirmando] = useState(false);
 
   useEffect(() => {
-    fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}`, {
+    fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
       headers: {
         'Authorization': token,
       }
@@ -41,7 +41,7 @@ const ViajeDetalle = () => {
   }, [id])
 
   const borrar = () => {
-    fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}`, {
+    fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
       method: 'DELETE',
       headers: {
         'Authorization': token,

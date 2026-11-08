@@ -7,13 +7,13 @@ import "./styles/grafica.css";
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const GraficaViajes = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const token = useSelector(state => state.usuario.token);
   const cantidad = useSelector(state => state.viajes.cantidad);
   const [viajes, setViajes] = useState([]);
 
   useEffect(() => {
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/viajes?limit=50", {
+    fetch(`${API_BASE_URL}/v1/viajes?limit=50`, {
       headers: {
         'Authorization': token,
       }

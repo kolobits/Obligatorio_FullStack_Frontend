@@ -7,7 +7,7 @@ import BotonCargando from "../cargando/BotonCargando";
 import OpcionViaje from "./OpcionViaje";
 
 const Distancia = ({ id }) => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const token = useSelector(state => state.usuario.token);
   const [resultado, setResultado] = useState(null);
   const [errorDistancia, setErrorDistancia] = useState("");
@@ -27,7 +27,7 @@ const Distancia = ({ id }) => {
 
   const onSubmit = data => {
     setCargando(true);
-    fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}/distancia?origen=${encodeURIComponent(data.origen)}`, {
+    fetch(`${API_BASE_URL}/v1/viajes/${id}/distancia?origen=${encodeURIComponent(data.origen)}`, {
       headers: {
         'Authorization': token,
       }

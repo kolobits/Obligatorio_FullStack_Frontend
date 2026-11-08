@@ -8,6 +8,7 @@ import { Link, useNavigate } from "react-router";
 import BotonCargando from "../cargando/BotonCargando";
 
 const FormLogin = () => {
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorLogin, setErrorLogin] = useState("");
@@ -29,7 +30,7 @@ const FormLogin = () => {
 
   const onSubmit = (data) => {
     setCargando(true);
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/auth/login", {
+    fetch(`${API_BASE_URL}/v1/auth/login`, {
       method: "POST",
       body: JSON.stringify(data),
       headers: {

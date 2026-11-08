@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import VueltaAlMundo from "../cargando/VueltaAlMundo";
 
 const LugaresCerca = ({ id }) => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const token = useSelector(state => state.usuario.token);
   const perfil = useSelector(state => state.usuario.perfil);
   const [lugares, setLugares] = useState(null);
@@ -14,7 +14,7 @@ const LugaresCerca = ({ id }) => {
 
   useEffect(() => {
     if (esPremium) {
-      fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}/puntos-interes`, {
+      fetch(`${API_BASE_URL}/v1/viajes/${id}/puntos-interes`, {
         headers: {
           'Authorization': token,
         }

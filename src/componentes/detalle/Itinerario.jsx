@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import VueltaAlMundo from "../cargando/VueltaAlMundo";
 import ClimaPorDia from "./ClimaPorDia";
+import MapaRecorrido from "../mapa/MapaRecorrido";
 
 const Itinerario = ({ id }) => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const token = useSelector(state => state.usuario.token);
   const [plan, setPlan] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}/clima`, {
+    fetch(`${API_BASE_URL}/v1/viajes/${id}/clima`, {
       headers: {
         'Authorization': token,
       }
@@ -59,6 +60,7 @@ const Itinerario = ({ id }) => {
 
   const esPronostico = plan.tipo === "pronostico";
   const dias = plan.itinerarioPorDia;
+  const hayLugares = dias.some(dia => dia.lugares.length > 0);
   const primerDia = formatearDia(dias[0].fecha).split(" ").slice(1).join(" ");
   const ultimoDia = formatearDia(dias[dias.length - 1].fecha).split(" ").slice(1).join(" ");
 
@@ -83,7 +85,9 @@ const Itinerario = ({ id }) => {
       </div>
 
       <ClimaPorDia plan={plan} />
-
+{hayLugares && plan.destinoCoordenadas && (
+  <MapaRecorrido dias={dias} centro={plan.destinoCoordenadas} recorridoTotal={plan.recorrido} />
+)}
       <div className="row g-4">
         <div className="col-lg-9">
           <ol className="list-unstyled panel py-2 mb-0">

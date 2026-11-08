@@ -8,7 +8,7 @@ import BotonCargando from "../cargando/BotonCargando";
 import "./styles/pase.css";
 
 const FormViaje = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
   const { id } = useParams();
   const token = useSelector(state => state.usuario.token);
@@ -46,7 +46,7 @@ const FormViaje = () => {
 
   useEffect(() => {
     if (id) {
-      fetch(`https://obligatorio1-fullstack.vercel.app/v1/viajes/${id}`, {
+      fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
         headers: {
           'Authorization': token,
         }
@@ -88,7 +88,8 @@ const FormViaje = () => {
     }
 
 
-    let url = "https://obligatorio1-fullstack.vercel.app/v1/viajes";
+
+    let url = `${API_BASE_URL}/v1/viajes`;
     let metodo = "POST";
     if (id) {
       url = url + `/${id}`;
@@ -107,7 +108,7 @@ const FormViaje = () => {
       .then(datos => {
         console.log(datos);
         if (datos._id) {
-          navigate("/dashboard");
+          navigate(`/viajes/${datos._id}`);
         } else if (datos.message) {
           setGuardando(false);
           setErrorViaje(datos.message);

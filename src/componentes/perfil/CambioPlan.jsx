@@ -6,7 +6,7 @@ import "../viajes/styles/pase.css";
 import "./styles/plan.css";
 
 const CambioPlan = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const perfil = useSelector(state => state.usuario.perfil);
@@ -15,7 +15,7 @@ const CambioPlan = () => {
 
   const pasarAPremium = () => {
     setCargando(true);
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/usuarios/plan", {
+    fetch(`${API_BASE_URL}/v1/usuarios/plan`, {
       method: 'PUT',
       headers: {
         'Authorization': token,

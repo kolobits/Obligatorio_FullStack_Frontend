@@ -1,0 +1,112 @@
+.mapa-panel {
+  margin-bottom: 1.75rem;
+}
+
+.mapa-cabecera {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.25rem 1rem;
+  margin-bottom: 0.9rem;
+}
+
+.mapa-titulo {
+  font-family: var(--fuente-titulos);
+  font-weight: 800;
+  font-size: 1.35rem;
+  margin: 0;
+}
+
+.mapa-resumen {
+  margin: 0;
+  font-size: 0.9rem;
+  color: var(--lluvia);
+  font-variant-numeric: tabular-nums;
+}
+
+.mapa-dias {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.mapa-dia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.35rem 0.85rem;
+  border: 2px solid var(--linea);
+  border-radius: 999px;
+  background: var(--papel);
+  color: var(--tinta);
+  font-weight: 600;
+  font-size: 0.9rem;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.mapa-dia:hover:not(:disabled) {
+  border-color: var(--tinta);
+}
+
+.mapa-dia.activo {
+  background: var(--tinta);
+  border-color: var(--tinta);
+  color: var(--papel);
+}
+
+.mapa-dia:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.mapa-dia-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 2px var(--papel);
+}
+
+.mapa-contenedor {
+  height: 440px;
+  width: 100%;
+  border-radius: var(--radio-control);
+  border: 1px solid var(--linea);
+  z-index: 0;
+}
+
+.marcador-dia {
+  background: none;
+  border: 0;
+}
+
+.marcador-dia span {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 2px solid #fff;
+  box-shadow: 0 2px 6px rgba(19, 33, 60, 0.35);
+}
+
+.marcador-dia b {
+  transform: rotate(45deg);
+  color: #fff;
+  font-family: var(--fuente-titulos);
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+
+.mapa-panel .leaflet-popup-content {
+  font-family: var(--fuente-texto);
+  color: var(--tinta);
+}
+
+@media (max-width: 575.98px) {
+  .mapa-contenedor {
+    height: 340px;
+  }
+}

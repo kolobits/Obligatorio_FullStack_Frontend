@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router";
 import BotonCargando from "../cargando/BotonCargando";
 
 const FormRegistro = () => {
-
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [errorRegistro, setErrorRegistro] = useState("");
@@ -37,7 +37,7 @@ const FormRegistro = () => {
       "password": password
     }
 
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/auth/login", {
+    fetch(`${API_BASE_URL}/v1/auth/login`, {
       method: 'POST',
       body: JSON.stringify(objLogin),
       headers: {
@@ -62,7 +62,7 @@ const FormRegistro = () => {
       "password": data.password
     }
 
-    fetch("https://obligatorio1-fullstack.vercel.app/v1/auth/signup", {
+    fetch(`${API_BASE_URL}/v1/auth/signup`, {
       method: 'POST',
       body: JSON.stringify(objRegistro),
       headers: {
