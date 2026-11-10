@@ -1,16 +1,19 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
-import VueltaAlMundo from "../cargando/VueltaAlMundo";
+import { useDispatch, useSelector } from "react-redux";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import ClimaPorDia from "./ClimaPorDia";
 import MapaRecorrido from "../mapa/MapaRecorrido";
 
 const Itinerario = ({ id }) => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const [plan, setPlan] = useState(null);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    dispatch(mostrarSpinner("Mirando el clima y armando tu itinerario…"));
+
     fetch(`${API_BASE_URL}/v1/viajes/${id}/clima`, {
       headers: {
         'Authorization': token,
@@ -27,6 +30,8 @@ const Itinerario = ({ id }) => {
           setError(datos.error);
         }
       })
+      .catch(() => setError("No se pudo conectar con el servidor."))
+      .finally(() => dispatch(ocultarSpinner()))
   }, [id])
 
   const formatearDia = (fecha) => {
@@ -55,7 +60,7 @@ const Itinerario = ({ id }) => {
   }
 
   if (plan === null) {
-    return <VueltaAlMundo tamano={120} texto="Estamos mirando el clima y armando tu itinerario…" />;
+    return null;
   }
 
   const esPronostico = plan.tipo === "pronostico";
@@ -85,9 +90,10 @@ const Itinerario = ({ id }) => {
       </div>
 
       <ClimaPorDia plan={plan} />
-{hayLugares && plan.destinoCoordenadas && (
-  <MapaRecorrido dias={dias} centro={plan.destinoCoordenadas} recorridoTotal={plan.recorrido} />
-)}
+      {hayLugares && plan.destinoCoordenadas && (
+        <MapaRecorrido dias={dias} centro={plan.destinoCoordenadas} recorridoTotal={plan.recorrido} />
+      )}
+
       <div className="row g-4">
         <div className="col-lg-9">
           <ol className="list-unstyled panel py-2 mb-0">

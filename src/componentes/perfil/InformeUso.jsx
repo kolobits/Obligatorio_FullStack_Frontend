@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { guardarCantidad } from "../../store/slices/viajesSlice";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import "../viajes/styles/pase.css";
 import "./styles/plan.css";
 
@@ -14,8 +15,9 @@ const InformeUso = () => {
   const lugares = [1, 2, 3, 4];
   const porcentaje = Math.round((cantidad / 4) * 100);
 
-  
   useEffect(() => {
+    dispatch(mostrarSpinner());
+
     fetch(`${API_BASE_URL}/v1/viajes?limit=1`, {
       headers: {
         'Authorization': token,
@@ -28,10 +30,12 @@ const InformeUso = () => {
           dispatch(guardarCantidad(datos.total));
         }
       })
+      .catch(() => console.error("No se pudo cargar la cantidad de viajes"))
+      .finally(() => dispatch(ocultarSpinner()))
   }, [])
 
   if (perfil === null) {
-    return <div className="panel text-secondary">Cargando tu plan…</div>;
+    return null;
   }
 
   if (perfil.perfil === "plus") {

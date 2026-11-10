@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
+import toast from "react-hot-toast";
 import { eliminarViaje } from "../../store/slices/viajesSlice";
+import ModalConfirmar from "../comunes/ModalConfirmar";
 import "./styles/pase.css";
 
 const PaseViaje = ({
@@ -17,6 +19,7 @@ const PaseViaje = ({
   const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const [confirmando, setConfirmando] = useState(false);
+  const [borrando, setBorrando] = useState(false);
 
   const textosEstado = {
     planificado: "Planificado",
@@ -40,6 +43,7 @@ const PaseViaje = ({
     (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24) + 1;
 
   const borrar = () => {
+    setBorrando(true);
     fetch(`${API_BASE_URL}/v1/viajes/${_id}`, {
       method: 'DELETE',
       headers: {
@@ -49,7 +53,15 @@ const PaseViaje = ({
       .then(r => {
         if (r.status === 204) {
           dispatch(eliminarViaje(_id));
+          toast.success(`Se eliminó el viaje a ${destino}`);
+        } else {
+          toast.error("No se pudo eliminar el viaje");
         }
+      })
+      .catch(() => toast.error("No se pudo conectar con el servidor"))
+      .finally(() => {
+        setBorrando(false);
+        setConfirmando(false);
       })
   }
 
@@ -75,26 +87,15 @@ const PaseViaje = ({
           </dl>
 
           <div className="d-flex flex-wrap align-items-center gap-2 mt-3">
-            {!confirmando && (
-              <>
-                <Link to={`/viajes/${_id}`} className="btn btn-tinta btn-sm">
-                  Ver detalle
-                </Link>
-                <Link to={`/viajes/${_id}/editar`} className="btn btn-borde btn-sm">
-                  <i className="bi bi-pencil"></i> Editar
-                </Link>
-                <button type="button" className="btn btn-peligro btn-sm" onClick={() => setConfirmando(true)}>
-                  <i className="bi bi-trash"></i> Eliminar
-                </button>
-              </>
-            )}
-            {confirmando && (
-              <>
-                <span className="small fw-semibold w-100">¿Eliminar este viaje?</span>
-                <button type="button" className="btn btn-peligro btn-sm" onClick={borrar}>Sí, eliminar</button>
-                <button type="button" className="btn btn-borde btn-sm" onClick={() => setConfirmando(false)}>Cancelar</button>
-              </>
-            )}
+            <Link to={`/viajes/${_id}`} className="btn btn-tinta btn-sm">
+              Ver detalle
+            </Link>
+            <Link to={`/viajes/${_id}/editar`} className="btn btn-borde btn-sm">
+              <i className="bi bi-pencil"></i> Editar
+            </Link>
+            <button type="button" className="btn btn-peligro btn-sm" onClick={() => setConfirmando(true)}>
+              <i className="bi bi-trash"></i> Eliminar
+            </button>
           </div>
         </div>
         <div className="pase-talon">
@@ -116,6 +117,18 @@ const PaseViaje = ({
           </span>
         </div>
       </div>
+
+      <ModalConfirmar
+        abierto={confirmando}
+        titulo={`¿Eliminar el viaje a ${destino}?`}
+        mensaje="Se borran también el itinerario y la foto de portada. Esta acción no se puede deshacer."
+        textoConfirmar="Sí, eliminar"
+        textoCargando="Eliminando…"
+        cargando={borrando}
+        peligro={true}
+        onConfirmar={borrar}
+        onCancelar={() => setConfirmando(false)}
+      />
     </div>
   );
 };

@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { useSelector } from "react-redux";
 
 const PaseGrande = ({ destino, fechaInicio, fechaFin, presupuesto, estado, categoria, descripcion, imagenUrl }) => {
 
   const categorias = useSelector(state => state.categorias.listaCategorias);
+  const [fotoRota, setFotoRota] = useState(false);
 
   const textosEstado = {
     planificado: "Planificado",
@@ -20,6 +22,7 @@ const PaseGrande = ({ destino, fechaInicio, fechaFin, presupuesto, estado, categ
   const codigo = destino.slice(0, 3).toUpperCase();
   const dias = (new Date(fechaFin) - new Date(fechaInicio)) / (1000 * 60 * 60 * 24) + 1;
   const encontrada = categorias.find(c => c._id === categoria);
+  const foto = imagenUrl ? imagenUrl.replace("/upload/", "/upload/c_limit,w_1200,h_1200,q_auto,f_auto/") : "";
 
   return (
     <article className="pase pase-grande mb-3">
@@ -37,8 +40,8 @@ const PaseGrande = ({ destino, fechaInicio, fechaFin, presupuesto, estado, categ
         {descripcion && <p className="mt-4 mb-0">{descripcion}</p>}
       </div>
       <div className="pase-talon">
-        {imagenUrl ? (
-          <img src={imagenUrl} alt={`Foto de portada del viaje a ${destino}`} />
+        {foto && !fotoRota ? (
+          <img src={foto} alt={`Foto de portada del viaje a ${destino}`} onError={() => setFotoRota(true)} />
         ) : (
           <div className="pase-sin-foto">
             <i className="bi bi-airplane-fill"></i>

@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
+import { guardarCantidad } from "../../store/slices/viajesSlice";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
 import "./styles/grafica.css";
@@ -8,11 +10,22 @@ ChartJS.register(ArcElement, Tooltip, Legend);
 
 const GraficaViajes = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const cantidad = useSelector(state => state.viajes.cantidad);
   const [viajes, setViajes] = useState([]);
+  const [totalCargado, setTotalCargado] = useState(null);
 
   useEffect(() => {
+    if (totalCargado === cantidad) {
+      return;
+    }
+
+    const mostrarCarga = totalCargado === null;
+    if (mostrarCarga) {
+      dispatch(mostrarSpinner());
+    }
+
     fetch(`${API_BASE_URL}/v1/viajes?limit=50`, {
       headers: {
         'Authorization': token,
@@ -23,6 +36,14 @@ const GraficaViajes = () => {
         console.log(datos);
         if (datos.data) {
           setViajes(datos.data);
+          setTotalCargado(datos.total);
+          dispatch(guardarCantidad(datos.total));
+        }
+      })
+      .catch(() => console.error("No se pudo cargar la gráfica"))
+      .finally(() => {
+        if (mostrarCarga) {
+          dispatch(ocultarSpinner());
         }
       })
   }, [cantidad])
@@ -30,7 +51,7 @@ const GraficaViajes = () => {
   const estados = [
     { valor: "planificado", texto: "Planificados", color: "#2f5bea" },
     { valor: "en_curso", texto: "En curso", color: "#ffc82e" },
-    { valor: "finalizado", texto: "Finalizados", color: "#6b7a90" },
+    { valor: "finalizado", texto: "Finalizados", color: "#5b6778" },
     { valor: "cancelado", texto: "Cancelados", color: "#c93a32" },
   ];
 

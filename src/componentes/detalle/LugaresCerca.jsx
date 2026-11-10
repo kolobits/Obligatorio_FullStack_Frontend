@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
-import VueltaAlMundo from "../cargando/VueltaAlMundo";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 
 const LugaresCerca = ({ id }) => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
   const perfil = useSelector(state => state.usuario.perfil);
   const [lugares, setLugares] = useState(null);
@@ -14,6 +15,8 @@ const LugaresCerca = ({ id }) => {
 
   useEffect(() => {
     if (esPremium) {
+      dispatch(mostrarSpinner("Buscando lugares cerca de tu destino…"));
+
       fetch(`${API_BASE_URL}/v1/viajes/${id}/puntos-interes`, {
         headers: {
           'Authorization': token,
@@ -28,6 +31,8 @@ const LugaresCerca = ({ id }) => {
             setError(datos.message);
           }
         })
+        .catch(() => setError("No se pudo conectar con el servidor."))
+        .finally(() => dispatch(ocultarSpinner()))
     }
   }, [id, esPremium])
 
@@ -47,7 +52,7 @@ const LugaresCerca = ({ id }) => {
   }
 
   if (lugares === null) {
-    return <VueltaAlMundo tamano={100} texto="Buscando lugares cerca de tu destino…" />;
+    return null;
   }
 
   return (

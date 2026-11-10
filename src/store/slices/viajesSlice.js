@@ -8,7 +8,7 @@ const initialState = {
     filtroEstado: "",
     filtroCategoria: "",
     page: 1,
-    cargando: false
+    recargas: 0
 }
 
 export const viajesSlice = createSlice({
@@ -38,12 +38,10 @@ export const viajesSlice = createSlice({
             state.listaViajes = state.listaViajes.filter(viaje => viaje._id !== action.payload)
             state.total = state.total - 1
             state.cantidad = state.cantidad - 1
-        },
-        empezarCarga: (state) => {
-            state.cargando = true
-        },
-        terminarCarga: (state) => {
-            state.cargando = false
+            if (state.listaViajes.length === 0 && state.page > 1) {
+                state.page = state.page - 1
+            }
+            state.recargas = state.recargas + 1
         },
         vaciarViajes: () => {
             return initialState
@@ -51,5 +49,5 @@ export const viajesSlice = createSlice({
     }
 })
 
-export const { guardarViajes, guardarCantidad, cambiarEstado, cambiarCategoria, cambiarPagina, eliminarViaje, empezarCarga, terminarCarga, vaciarViajes } = viajesSlice.actions
+export const { guardarViajes, guardarCantidad, cambiarEstado, cambiarCategoria, cambiarPagina, eliminarViaje, vaciarViajes } = viajesSlice.actions
 export default viajesSlice.reducer

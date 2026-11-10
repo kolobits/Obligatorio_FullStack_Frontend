@@ -1,10 +1,12 @@
 import "./styles/spinners.css";
 import { AVION } from "./avion";
 
-const BotonCargando = ({ texto, textoCargando, cargando, onClick, deshabilitado, clases }) => {
+const BotonCargando = ({ texto, textoCargando, cargando, onClick, deshabilitado, clases, variante }) => {
+  const base = variante ? variante : "btn-senal";
+
   if (cargando) {
     return (
-      <button type="button" className={`btn btn-senal btn-cargando ${clases}`} disabled>
+      <button type="button" className={`btn ${base} btn-cargando ${clases || ""}`} disabled>
         <span className="btn-cargando-avion" aria-hidden="true">
           <svg viewBox="0 0 24 24"><path d={AVION} /></svg>
         </span>
@@ -14,7 +16,7 @@ const BotonCargando = ({ texto, textoCargando, cargando, onClick, deshabilitado,
   }
 
   return (
-    <button type="button" className={`btn btn-senal ${clases}`} onClick={onClick} disabled={deshabilitado}>
+    <button type="button" className={`btn ${base} ${clases || ""}`} onClick={onClick} disabled={deshabilitado}>
       {texto}
     </button>
   );

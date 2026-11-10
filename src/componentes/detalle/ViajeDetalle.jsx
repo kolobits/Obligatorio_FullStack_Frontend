@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
+import toast from "react-hot-toast";
 import { eliminarViaje } from "../../store/slices/viajesSlice";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import PaseGrande from "./PaseGrande";
 import Itinerario from "./Itinerario";
 import Distancia from "./Distancia";
 import LugaresCerca from "./LugaresCerca";
-import VueltaAlMundo from "../cargando/VueltaAlMundo";
+import ModalConfirmar from "../comunes/ModalConfirmar";
 import "../viajes/styles/pase.css";
 import "./styles/detalle.css";
 
@@ -22,8 +24,11 @@ const ViajeDetalle = () => {
   const [error, setError] = useState("");
   const [pestana, setPestana] = useState("itinerario");
   const [confirmando, setConfirmando] = useState(false);
+  const [borrando, setBorrando] = useState(false);
 
   useEffect(() => {
+    dispatch(mostrarSpinner("Buscando tu viaje…"));
+
     fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
       headers: {
         'Authorization': token,
@@ -38,9 +43,12 @@ const ViajeDetalle = () => {
           setError(datos.message);
         }
       })
+      .catch(() => setError("No se pudo conectar con el servidor."))
+      .finally(() => dispatch(ocultarSpinner()))
   }, [id])
 
   const borrar = () => {
+    setBorrando(true);
     fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
       method: 'DELETE',
       headers: {
@@ -50,8 +58,18 @@ const ViajeDetalle = () => {
       .then(r => {
         if (r.status === 204) {
           dispatch(eliminarViaje(id));
+          toast.success(`Se eliminó el viaje a ${viaje.destino}`);
           navigate("/dashboard");
+        } else {
+          setBorrando(false);
+          setConfirmando(false);
+          toast.error("No se pudo eliminar el viaje");
         }
+      })
+      .catch(() => {
+        setBorrando(false);
+        setConfirmando(false);
+        toast.error("No se pudo conectar con el servidor");
       })
   }
 
@@ -76,11 +94,7 @@ const ViajeDetalle = () => {
   }
 
   if (viaje === null) {
-    return (
-      <main className="container py-5">
-        <VueltaAlMundo tamano={110} texto="Buscando tu viaje…" />
-      </main>
-    );
+    return <main className="container py-5" style={{ minHeight: "60vh" }}></main>;
   }
 
   return (
@@ -90,19 +104,8 @@ const ViajeDetalle = () => {
       <PaseGrande {...viaje} />
 
       <div className="d-flex flex-wrap align-items-center gap-2 mb-5">
-        {!confirmando && (
-          <>
-            <Link to={`/viajes/${id}/editar`} className="btn btn-borde"><i className="bi bi-pencil"></i> Editar viaje</Link>
-            <button type="button" className="btn btn-peligro" onClick={() => setConfirmando(true)}><i className="bi bi-trash"></i> Borrar viaje</button>
-          </>
-        )}
-        {confirmando && (
-          <>
-            <span className="fw-semibold me-2">¿Borrar el viaje a {viaje.destino}? No se puede deshacer.</span>
-            <button type="button" className="btn btn-peligro" onClick={borrar}>Sí, borrar</button>
-            <button type="button" className="btn btn-borde" onClick={() => setConfirmando(false)}>Cancelar</button>
-          </>
-        )}
+        <Link to={`/viajes/${id}/editar`} className="btn btn-borde"><i className="bi bi-pencil"></i> Editar viaje</Link>
+        <button type="button" className="btn btn-peligro" onClick={() => setConfirmando(true)}><i className="bi bi-trash"></i> Borrar viaje</button>
       </div>
 
       <ul className="nav pestanas mb-4" role="tablist">
@@ -124,6 +127,18 @@ const ViajeDetalle = () => {
       {pestana === "itinerario" && <Itinerario id={id} />}
       {pestana === "distancia" && <Distancia id={id} />}
       {pestana === "lugares" && <LugaresCerca id={id} />}
+
+      <ModalConfirmar
+        abierto={confirmando}
+        titulo={`¿Borrar el viaje a ${viaje.destino}?`}
+        mensaje="Se borran también el itinerario y la foto de portada. Esta acción no se puede deshacer."
+        textoConfirmar="Sí, borrar"
+        textoCargando="Borrando…"
+        cargando={borrando}
+        peligro={true}
+        onConfirmar={borrar}
+        onCancelar={() => setConfirmando(false)}
+      />
     </main>
   );
 };

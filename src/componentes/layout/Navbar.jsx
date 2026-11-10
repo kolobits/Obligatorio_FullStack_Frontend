@@ -1,11 +1,13 @@
 import { useEffect } from "react";
 import { Link, NavLink, Outlet, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import { borrarToken, guardarPerfil } from "../../store/slices/usuarioSlice";
 import { guardarCategorias } from "../../store/slices/categoriasSlice";
+import { vaciarViajes } from "../../store/slices/viajesSlice";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import Avatar from "../perfil/Avatar";
 import "./styles/navbar.css";
-import { vaciarViajes } from "../../store/slices/viajesSlice";
 
 const Navbar = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
@@ -13,17 +15,19 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const perfil = useSelector(state => state.usuario.perfil);
 
- const logout = () => {
-  localStorage.clear();
-  dispatch(borrarToken());
-  dispatch(vaciarViajes());
-  navigate("/");
-}
+  const logout = () => {
+    localStorage.clear();
+    dispatch(borrarToken());
+    dispatch(vaciarViajes());
+    navigate("/");
+  }
 
   useEffect(() => {
     if (localStorage.getItem("token") === null) {
       navigate("/");
     } else {
+      dispatch(mostrarSpinner());
+
       fetch(`${API_BASE_URL}/v1/usuarios/perfil`, {
         headers: {
           'Authorization': localStorage.getItem("token"),
@@ -38,6 +42,8 @@ const Navbar = () => {
             logout();
           }
         })
+        .catch(() => toast.error("No se pudo conectar con el servidor"))
+        .finally(() => dispatch(ocultarSpinner()))
 
       fetch(`${API_BASE_URL}/v1/categorias`, {
         headers: {
@@ -47,8 +53,11 @@ const Navbar = () => {
         .then(r => r.json())
         .then(datos => {
           console.log(datos);
-          dispatch(guardarCategorias(datos));
+          if (Array.isArray(datos)) {
+            dispatch(guardarCategorias(datos));
+          }
         })
+        .catch(() => toast.error("No se pudieron cargar las categorías"))
     }
   }, [])
 
@@ -83,7 +92,5 @@ const Navbar = () => {
     </div>
   );
 };
-
-
 
 export default Navbar;

@@ -1,0 +1,86 @@
+.modal-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  background: rgba(19, 33, 60, 0.45);
+  animation: modal-aparecer 0.2s ease;
+}
+
+.modal-contenido {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: calc(100% - 2rem);
+  max-width: 480px;
+  padding: 1.75rem;
+  background: var(--papel);
+  border-radius: var(--radio-pase);
+  box-shadow: 0 20px 50px rgba(19, 33, 60, 0.3);
+  outline: none;
+  animation: modal-entrar 0.25s ease;
+}
+
+.modal-titulo {
+  font-size: 1.5rem;
+  margin-bottom: 1.25rem;
+}
+
+.modal-confirmar {
+  text-align: center;
+}
+
+.modal-confirmar .modal-titulo {
+  margin-bottom: 0.5rem;
+}
+
+.modal-confirmar-icono {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 0 auto 1rem;
+  border-radius: 50%;
+  background: var(--senal-suave);
+  color: var(--tinta);
+  font-size: 1.5rem;
+}
+
+.modal-confirmar-icono.peligro {
+  background: #fbe7e5;
+  color: var(--alerta);
+}
+
+.modal-confirmar p {
+  color: var(--lluvia);
+  margin-bottom: 1.5rem;
+}
+
+.modal-confirmar .acciones {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+@keyframes modal-aparecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes modal-entrar {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -46%);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .modal-fondo,
+  .modal-contenido {
+    animation: none;
+  }
+}

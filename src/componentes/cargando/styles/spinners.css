@@ -43,6 +43,21 @@
   }
 }
 
+.btn.btn-peligro.btn-cargando,
+.btn.btn-peligro.btn-cargando:disabled {
+  background: var(--alerta);
+  border-color: var(--alerta);
+  color: var(--papel);
+}
+
+.btn-peligro .btn-cargando-avion {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.btn-peligro .btn-cargando-avion svg {
+  fill: var(--papel);
+}
+
 .cargando {
   padding: 3rem 0;
   text-align: center;

@@ -113,7 +113,14 @@
   border-bottom-right-radius: var(--radio-pase);
 }
 
+.pase-grande .pase-talon::before,
+.pase-grande .pase-talon::after {
+  z-index: 1;
+}
+
 .pase-grande .pase-talon img {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -121,39 +128,30 @@
 }
 
 .estado {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  font-weight: 600;
-  padding: 0.25rem 0.65rem;
-  border-radius: 999px;
+  display: inline-block;
   width: fit-content;
-}
-
-.estado::before {
-  content: "";
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: currentColor;
+  font-size: 0.72rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.4rem 0.55rem;
+  border-radius: 4px;
+  color: #ffffff;
 }
 
 .estado-planificado {
-  background: #e3eafd;
-  color: var(--ruta);
+  background: var(--estado-planificado);
 }
 .estado-en-curso {
-  background: var(--senal-suave);
-  color: #8a6100;
+  background: var(--estado-en-curso);
+  color: var(--tinta);
 }
 .estado-finalizado {
-  background: #eceff3;
-  color: var(--lluvia);
+  background: var(--estado-finalizado);
 }
 .estado-cancelado {
-  background: #fbe7e6;
-  color: var(--alerta);
+  background: var(--estado-cancelado);
 }
 
 .categoria {
@@ -184,4 +182,36 @@
     height: 180px;
     border-radius: 0 0 var(--radio-pase) var(--radio-pase);
   }
+}
+
+.portada {
+  aspect-ratio: 16 / 7;
+  overflow: hidden;
+  border-radius: var(--radio-control);
+  border: 1px solid var(--linea);
+  background: var(--aluminio);
+}
+
+.portada-imagen {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.portada-vacia {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.35rem;
+  color: var(--lluvia);
+  font-size: 0.9rem;
+  border: 2px dashed var(--linea);
+  border-radius: var(--radio-control);
+}
+
+.portada-vacia i {
+  font-size: 1.75rem;
 }

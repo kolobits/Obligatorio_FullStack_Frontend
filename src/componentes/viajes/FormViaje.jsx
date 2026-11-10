@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router";
+import toast from "react-hot-toast";
+import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import viajeSchema from "./validations/viajeSchema";
 import BotonCargando from "../cargando/BotonCargando";
 import "./styles/pase.css";
@@ -10,6 +12,7 @@ import "./styles/pase.css";
 const FormViaje = () => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const { id } = useParams();
   const token = useSelector(state => state.usuario.token);
   const categorias = useSelector(state => state.categorias.listaCategorias);
@@ -46,6 +49,8 @@ const FormViaje = () => {
 
   useEffect(() => {
     if (id) {
+      dispatch(mostrarSpinner("Buscando tu viaje…"));
+
       fetch(`${API_BASE_URL}/v1/viajes/${id}`, {
         headers: {
           'Authorization': token,
@@ -69,6 +74,8 @@ const FormViaje = () => {
             setErrorViaje(datos.message);
           }
         })
+        .catch(() => setErrorViaje("No se pudo conectar con el servidor."))
+        .finally(() => dispatch(ocultarSpinner()))
     }
   }, [id])
 
@@ -86,8 +93,6 @@ const FormViaje = () => {
     if (imagenUrl !== "") {
       objViaje.imagenUrl = imagenUrl;
     }
-
-
 
     let url = `${API_BASE_URL}/v1/viajes`;
     let metodo = "POST";
@@ -108,6 +113,7 @@ const FormViaje = () => {
       .then(datos => {
         console.log(datos);
         if (datos._id) {
+          toast.success(id ? "Viaje actualizado" : `Listo, te vas a ${datos.destino}`);
           navigate(`/viajes/${datos._id}`);
         } else if (datos.message) {
           setGuardando(false);
@@ -116,6 +122,10 @@ const FormViaje = () => {
           setGuardando(false);
           setErrorViaje(datos.error);
         }
+      })
+      .catch(() => {
+        setGuardando(false);
+        setErrorViaje("No se pudo conectar con el servidor.");
       })
   }
 

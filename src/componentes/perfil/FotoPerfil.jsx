@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import { guardarPerfil } from "../../store/slices/usuarioSlice";
 import Avatar from "./Avatar";
 import { AVION } from "../cargando/avion";
@@ -68,6 +69,7 @@ const FotoPerfil = () => {
       .then(usuario => {
         if (usuario.username) {
           dispatch(guardarPerfil(usuario));
+          toast.success("Foto de perfil actualizada");
         } else {
           setError(usuario.message || "No se pudo guardar la foto.");
         }

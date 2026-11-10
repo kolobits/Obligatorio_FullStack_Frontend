@@ -9,6 +9,11 @@
   --alerta: #c93a32;
   --linea: #d3d9e3;
 
+  --estado-planificado: #2f5bea;
+  --estado-en-curso: #ffc82e;
+  --estado-finalizado: #5b6778;
+  --estado-cancelado: #c93a32;
+
   --fuente-titulos: "Bricolage Grotesque", system-ui, sans-serif;
   --fuente-texto: "Instrument Sans", system-ui, sans-serif;
 
@@ -223,14 +228,29 @@ main a:not([class]):hover {
 }
 
 .alert {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid transparent;
   border-radius: var(--radio-control);
-  border-width: 0 0 0 5px;
+  font-size: 0.95rem;
+  line-height: 1.4;
 }
 
 .alert-danger {
-  background: #fbe7e6;
-  border-color: var(--alerta);
+  background: #fdf1f0;
+  border-color: #f1c9c6;
   color: #7d221d;
+}
+
+.alert-danger::before {
+  content: "\f332";
+  font-family: "bootstrap-icons";
+  color: var(--alerta);
+  font-size: 1rem;
+  line-height: 1.4;
+  flex: none;
 }
 
 @media (max-width: 767.98px) {

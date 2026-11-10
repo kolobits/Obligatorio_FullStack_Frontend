@@ -1,5 +1,6 @@
 import Modal from "react-modal";
 import FormCategoria from "./FormCategoria";
+import "../comunes/styles/modal.css";
 
 Modal.setAppElement("#root");
 

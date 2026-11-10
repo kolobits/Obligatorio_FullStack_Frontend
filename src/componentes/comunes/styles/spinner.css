@@ -1,0 +1,48 @@
+.spinner-fondo {
+  position: fixed;
+  inset: 0;
+  z-index: 1100;
+  display: grid;
+  place-items: center;
+  padding: 1rem;
+  background: rgba(232, 236, 242, 0.72);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.spinner-fondo.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.spinner-fondo:not(.visible) * {
+  animation-play-state: paused;
+}
+
+.spinner-tarjeta {
+  min-width: 280px;
+  padding: 1.5rem 2.5rem 1.75rem;
+  background: var(--papel);
+  border: 1px solid var(--linea);
+  border-radius: var(--radio-pase);
+  box-shadow: 0 20px 50px rgba(19, 33, 60, 0.18);
+  transform: translateY(8px);
+  transition: transform 0.2s ease;
+}
+
+.spinner-fondo.visible .spinner-tarjeta {
+  transform: translateY(0);
+}
+
+.spinner-tarjeta .cargando {
+  padding: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .spinner-fondo,
+  .spinner-tarjeta {
+    transition: none;
+  }
+}

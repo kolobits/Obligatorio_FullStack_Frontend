@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ModalConfirmar from "../comunes/ModalConfirmar";
 
 const FilaCategoria = ({ categoria, esAdmin, onEditar, onBorrar }) => {
 
@@ -19,27 +20,24 @@ const FilaCategoria = ({ categoria, esAdmin, onEditar, onBorrar }) => {
       <td className="text-secondary">{categoria.descripcion || "Sin descripción"}</td>
       {esAdmin && (
         <td className="text-end text-nowrap">
-          {!confirmando && (
-            <>
-              <button type="button" className="btn btn-sm btn-borde me-2" onClick={() => onEditar(categoria)} aria-label={`Editar ${categoria.nombre}`}>
-                <i className="bi bi-pencil"></i>
-              </button>
-              <button type="button" className="btn btn-sm btn-peligro" onClick={() => setConfirmando(true)} aria-label={`Borrar ${categoria.nombre}`}>
-                <i className="bi bi-trash"></i>
-              </button>
-            </>
-          )}
-          {confirmando && (
-            <>
-              <span className="me-2 small">¿Borrar?</span>
-              <button type="button" className="btn btn-sm btn-peligro me-2" onClick={borrar} disabled={borrando}>
-                {borrando ? "Borrando…" : "Sí, borrar"}
-              </button>
-              <button type="button" className="btn btn-sm btn-borde" onClick={() => setConfirmando(false)} disabled={borrando}>
-                No
-              </button>
-            </>
-          )}
+          <button type="button" className="btn btn-sm btn-borde me-2" onClick={() => onEditar(categoria)} aria-label={`Editar ${categoria.nombre}`}>
+            <i className="bi bi-pencil"></i>
+          </button>
+          <button type="button" className="btn btn-sm btn-peligro" onClick={() => setConfirmando(true)} aria-label={`Borrar ${categoria.nombre}`}>
+            <i className="bi bi-trash"></i>
+          </button>
+
+          <ModalConfirmar
+            abierto={confirmando}
+            titulo={`¿Borrar la categoría ${categoria.nombre}?`}
+            mensaje="Si hay viajes que la usan, el sistema no va a dejar borrarla."
+            textoConfirmar="Sí, borrar"
+            textoCargando="Borrando…"
+            cargando={borrando}
+            peligro={true}
+            onConfirmar={borrar}
+            onCancelar={() => setConfirmando(false)}
+          />
         </td>
       )}
     </tr>

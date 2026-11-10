@@ -11,6 +11,7 @@ import FormViaje from "./componentes/viajes/FormViaje";
 import Perfil from "./componentes/perfil/Perfil";
 import ViajeDetalle from "./componentes/detalle/ViajeDetalle";
 import Categorias from "./componentes/categorias/Categorias";
+import Spinner from "./componentes/comunes/Spinner";
 import { Toaster } from "react-hot-toast";
 
 const App = () => {
@@ -30,6 +31,7 @@ const App = () => {
           </Route>
         </Routes>
       </BrowserRouter>
+      <Spinner />
       <Toaster
         position="bottom-right"
         toastOptions={{
