@@ -1,27 +1,37 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import toast from "react-hot-toast";
 import { mostrarSpinner, ocultarSpinner } from "../../store/slices/spinnerSlice";
 import ClimaPorDia from "./ClimaPorDia";
 import MapaRecorrido from "../mapa/MapaRecorrido";
+import ModalConfirmar from "../comunes/ModalConfirmar";
 
-const Itinerario = ({ id }) => {
+const Itinerario = ({ id, plan, setPlan }) => {
   const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
   const dispatch = useDispatch();
   const token = useSelector(state => state.usuario.token);
-  const [plan, setPlan] = useState(null);
   const [error, setError] = useState("");
+  const [confirmando, setConfirmando] = useState(false);
+  const [actualizando, setActualizando] = useState(false);
 
-  useEffect(() => {
-    dispatch(mostrarSpinner("Mirando el clima y armando tu itinerario…"));
-
-    fetch(`${API_BASE_URL}/v1/viajes/${id}/clima`, {
+  const pedirItinerario = (refrescar) => {
+    const consulta = refrescar ? "?refrescar=true" : "";
+    return fetch(`${API_BASE_URL}/v1/viajes/${id}/clima${consulta}`, {
       headers: {
         'Authorization': token,
       }
-    })
-      .then(r => r.json())
+    }).then(r => r.json());
+  };
+
+  useEffect(() => {
+    if (plan !== null) {
+      return;
+    }
+
+    dispatch(mostrarSpinner("Mirando el clima y armando tu itinerario…"));
+
+    pedirItinerario(false)
       .then(datos => {
-        console.log(datos);
         if (datos.itinerarioPorDia) {
           setPlan(datos);
         } else if (datos.message) {
@@ -33,6 +43,31 @@ const Itinerario = ({ id }) => {
       .catch(() => setError("No se pudo conectar con el servidor."))
       .finally(() => dispatch(ocultarSpinner()))
   }, [id])
+
+  const actualizar = () => {
+    setActualizando(true);
+
+    pedirItinerario(true)
+      .then(datos => {
+        if (datos.itinerarioPorDia) {
+          setPlan(datos);
+          toast.success("Itinerario actualizado");
+        } else {
+          toast.error(datos.message || datos.error || "No se pudo actualizar el itinerario");
+        }
+      })
+      .catch(() => toast.error("No se pudo conectar con el servidor"))
+      .finally(() => {
+        setActualizando(false);
+        setConfirmando(false);
+      })
+  }
+
+  const formatearGuardado = (fecha) => {
+    return new Date(fecha).toLocaleString("es-UY", {
+      day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit"
+    }).replace(".", "");
+  };
 
   const formatearDia = (fecha) => {
     return new Date(fecha)
@@ -68,6 +103,8 @@ const Itinerario = ({ id }) => {
   const hayLugares = dias.some(dia => dia.lugares.length > 0);
   const primerDia = formatearDia(dias[0].fecha).split(" ").slice(1).join(" ");
   const ultimoDia = formatearDia(dias[dias.length - 1].fecha).split(" ").slice(1).join(" ");
+  const hoy = new Date().toISOString().split("T")[0];
+  const puedeActualizar = dias[dias.length - 1].fecha >= hoy;
 
   return (
     <section>
@@ -87,6 +124,21 @@ const Itinerario = ({ id }) => {
               : `Estimación a partir de ${plan.resumenHistorico.aniosAnalizados} años de historial, porque el viaje todavía está lejos para tener pronóstico.`}
           </p>
         </div>
+      </div>
+
+      <div className="d-flex flex-wrap align-items-center justify-content-between gap-2 mb-3">
+        <span className="small text-secondary">
+          {plan.generadoEn ? (
+            <><i className="bi bi-bookmark-check"></i> Itinerario guardado el {formatearGuardado(plan.generadoEn)}</>
+          ) : (
+            <><i className="bi bi-exclamation-circle"></i> Este itinerario no se pudo guardar. Volvé a intentarlo más tarde.</>
+          )}
+        </span>
+        {puedeActualizar && (
+          <button type="button" className="btn btn-borde btn-sm" onClick={() => setConfirmando(true)}>
+            <i className="bi bi-arrow-repeat"></i> Actualizar itinerario
+          </button>
+        )}
       </div>
 
       <ClimaPorDia plan={plan} />
@@ -137,6 +189,18 @@ const Itinerario = ({ id }) => {
           </div>
         </div>
       </div>
+
+      <ModalConfirmar
+        abierto={confirmando}
+        titulo="¿Actualizar el itinerario?"
+        mensaje="Se vuelve a calcular con el clima más reciente. Pueden cambiar los lugares de cada día y la recomendación de la IA."
+        textoConfirmar="Sí, actualizar"
+        textoCargando="Actualizando…"
+        cargando={actualizando}
+        peligro={false}
+        onConfirmar={actualizar}
+        onCancelar={() => setConfirmando(false)}
+      />
     </section>
   );
 };

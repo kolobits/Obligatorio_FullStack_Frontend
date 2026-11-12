@@ -41,7 +41,6 @@ const ListaViajes = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos.data) {
           dispatch(guardarViajes(datos));
         } else if (datos.message === "unauthorized invalid token provided") {

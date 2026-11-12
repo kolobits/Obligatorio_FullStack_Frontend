@@ -58,7 +58,6 @@ const FormViaje = () => {
       })
         .then(r => r.json())
         .then(datos => {
-          console.log(datos);
           if (datos._id) {
             reset({
               destino: datos.destino,
@@ -111,7 +110,6 @@ const FormViaje = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos._id) {
           toast.success(id ? "Viaje actualizado" : `Listo, te vas a ${datos.destino}`);
           navigate(`/viajes/${datos._id}`);

@@ -35,7 +35,6 @@ const Navbar = () => {
       })
         .then(r => r.json())
         .then(datos => {
-          console.log(datos);
           if (datos.username) {
             dispatch(guardarPerfil(datos));
           } else {
@@ -52,7 +51,6 @@ const Navbar = () => {
       })
         .then(r => r.json())
         .then(datos => {
-          console.log(datos);
           if (Array.isArray(datos)) {
             dispatch(guardarCategorias(datos));
           }

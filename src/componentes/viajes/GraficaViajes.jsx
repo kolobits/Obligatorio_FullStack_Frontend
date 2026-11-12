@@ -33,7 +33,6 @@ const GraficaViajes = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos.data) {
           setViajes(datos.data);
           setTotalCargado(datos.total);

@@ -34,7 +34,6 @@ const Distancia = ({ id }) => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         setCargando(false);
         if (datos.recomendado) {
           setResultado(datos);

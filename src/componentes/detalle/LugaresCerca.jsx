@@ -24,7 +24,6 @@ const LugaresCerca = ({ id }) => {
       })
         .then(r => r.json())
         .then(datos => {
-          console.log(datos);
           if (datos.puntosDeInteres) {
             setLugares(datos.puntosDeInteres);
           } else {

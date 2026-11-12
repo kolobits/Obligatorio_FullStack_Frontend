@@ -46,7 +46,6 @@ const FormRegistro = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         localStorage.setItem("token", datos.token);
         dispatch(guardarToken(datos.token));
         navigate("/dashboard"); 
@@ -71,7 +70,6 @@ const FormRegistro = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos.id) {
           setErrorRegistro("");
           ingresar(data.username, data.password);

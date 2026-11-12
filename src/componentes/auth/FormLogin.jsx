@@ -39,7 +39,6 @@ const FormLogin = () => {
     })
       .then((r) => r.json())
       .then((datos) => {
-        console.log(datos);
         if (datos.token) {
           localStorage.setItem("token", datos.token);
           dispatch(guardarToken(datos.token));

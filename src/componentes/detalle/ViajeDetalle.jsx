@@ -21,6 +21,9 @@ const ViajeDetalle = () => {
   const perfil = useSelector(state => state.usuario.perfil);
 
   const [viaje, setViaje] = useState(null);
+  const [planDelViaje, setPlanDelViaje] = useState({ id: null, plan: null });
+  const plan = planDelViaje.id === id ? planDelViaje.plan : null;
+  const setPlan = (nuevoPlan) => setPlanDelViaje({ id, plan: nuevoPlan });
   const [error, setError] = useState("");
   const [pestana, setPestana] = useState("itinerario");
   const [confirmando, setConfirmando] = useState(false);
@@ -124,7 +127,7 @@ const ViajeDetalle = () => {
         ))}
       </ul>
 
-      {pestana === "itinerario" && <Itinerario id={id} />}
+      {pestana === "itinerario" && <Itinerario id={id} plan={plan} setPlan={setPlan} />}
       {pestana === "distancia" && <Distancia id={id} />}
       {pestana === "lugares" && <LugaresCerca id={id} />}
 

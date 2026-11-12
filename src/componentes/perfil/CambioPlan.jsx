@@ -24,7 +24,6 @@ const CambioPlan = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos.perfil) {
           dispatch(guardarPerfil(datos));
           toast.success("Ya sos premium: viajes ilimitados y lugares cerca");
