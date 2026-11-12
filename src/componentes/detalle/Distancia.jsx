@@ -43,6 +43,11 @@ const Distancia = ({ id }) => {
           setErrorDistancia(datos.message);
         }
       })
+      .catch(() => {
+        setCargando(false);
+        setResultado(null);
+        setErrorDistancia("No se pudo conectar con el servidor.");
+      })
   }
 
   const formatearDuracion = (horas) => {

@@ -25,7 +25,6 @@ const InformeUso = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos.data) {
           dispatch(guardarCantidad(datos.total));
         }

@@ -132,7 +132,7 @@ Todas las peticiones envían el token en la cabecera `Authorization`. La URL bas
 | Registro y login | `POST /v1/auth/signup`, `POST /v1/auth/login` |
 | Barra de navegación | `GET /v1/usuarios/perfil`, `GET /v1/categorias` |
 | Dashboard | `GET /v1/viajes` (paginado y filtrado), `DELETE /v1/viajes/:id` |
-| Formulario de viaje | `GET /v1/viajes/:id`, `POST /v1/viajes`, `PUT /v1/viajes/:id`, `POST /v1/uploads` |
+| Formulario de viaje | `GET /v1/viajes/:id`, `POST /v1/viajes`, `PUT /v1/viajes/:id` |
 | Detalle del viaje | `GET /v1/viajes/:id`, `GET /v1/viajes/:id/clima`, `GET /v1/viajes/:id/distancia`, `GET /v1/viajes/:id/puntos-interes` |
 | Perfil | `POST /v1/uploads`, `PUT /v1/usuarios/avatar`, `PUT /v1/usuarios/plan` |
 | Categorías | `POST`, `PUT` y `DELETE` sobre `/v1/categorias` |
@@ -145,9 +145,9 @@ Todos los formularios usan React Hook Form con `Controller` y un esquema de Yup 
 
 **Cuenta.** Registro con repetición de contraseña y auto-login al terminar. Login con mensajes de error en la propia interfaz. Cierre de sesión que limpia el token y el estado de Redux para que otro usuario pueda ingresar sin ver datos ajenos.
 
-**Viajes.** Listado paginado de a cuatro, con filtros por estado y por categoría. Cada tarjeta tiene acceso al detalle, a la edición y a la eliminación con confirmación. El alta está deshabilitada cuando un usuario del plan plus llega al límite de cuatro viajes. El formulario muestra una vista previa de la tarjeta mientras se completa y permite subir una foto de portada.
+**Viajes.** Listado paginado de a cuatro, con filtros por estado y por categoría. Cada tarjeta tiene acceso al detalle, a la edición y a la eliminación con confirmación. El alta está deshabilitada cuando un usuario del plan plus llega al límite de cuatro viajes. El formulario muestra una vista previa de la tarjeta mientras se completa.
 
-**Detalle del viaje.** Pase con los datos principales y la foto de portada. Itinerario por día: el servidor reparte los lugares de interés según el pronóstico (o el histórico de los últimos años si el viaje está lejos), deja los lugares bajo techo para los días de lluvia y acompaña con una recomendación generada por IA. Mapa del recorrido con un color por día, marcadores numerados, ruta por calle y filtro por día. Estimación de cómo llegar desde una ciudad de origen, en avión o en auto según la distancia. En el plan premium, lugares de interés cercanos ordenados por distancia.
+**Detalle del viaje.** Pase con los datos principales y una foto del destino. Itinerario por día: el servidor reparte los lugares de interés según el pronóstico (o el histórico de los últimos años si el viaje está lejos), deja los lugares bajo techo para los días de lluvia y acompaña con una recomendación generada por IA. Mapa del recorrido con un color por día, marcadores numerados, ruta por calle y filtro por día. Estimación de cómo llegar desde una ciudad de origen, en avión o en auto según la distancia. En el plan premium, lugares de interés cercanos ordenados por distancia.
 
 **Perfil.** Foto de perfil subida a Cloudinary, visible también en la barra. Informe de uso: porcentaje de viajes usados para el plan plus, cantidad para el premium. Cambio de plan a premium con confirmación.
 
@@ -167,7 +167,7 @@ Todos los formularios usan React Hook Form con `Controller` y un esquema de Yup 
 
 **Mapa con OpenStreetMap.** Se usan los tiles públicos de OpenStreetMap, que no requieren clave ni cuenta.
 
-**Imágenes.** Las fotos se suben desde el navegador a la API con `FormData`, y la API las guarda en Cloudinary. Al mostrarlas se piden a Cloudinary con un tamaño máximo, para no descargar la imagen original completa.
+**Imágenes.** La foto de perfil se sube desde el navegador a la API con `FormData`, y la API la guarda en Cloudinary. Las imágenes alojadas en Cloudinary se piden con un tamaño máximo, para no descargar la imagen original completa.
 
 ## Deploy
 

@@ -21,9 +21,7 @@ const ViajeDetalle = () => {
   const perfil = useSelector(state => state.usuario.perfil);
 
   const [viaje, setViaje] = useState(null);
-  const [planDelViaje, setPlanDelViaje] = useState({ id: null, plan: null });
-  const plan = planDelViaje.id === id ? planDelViaje.plan : null;
-  const setPlan = (nuevoPlan) => setPlanDelViaje({ id, plan: nuevoPlan });
+  const [plan, setPlan] = useState(null);
   const [error, setError] = useState("");
   const [pestana, setPestana] = useState("itinerario");
   const [confirmando, setConfirmando] = useState(false);
@@ -39,7 +37,6 @@ const ViajeDetalle = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        console.log(datos);
         if (datos._id) {
           setViaje(datos);
         } else {

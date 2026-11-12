@@ -46,10 +46,15 @@ const FormRegistro = () => {
     })
       .then(r => r.json())
       .then(datos => {
-        localStorage.setItem("token", datos.token);
-        dispatch(guardarToken(datos.token));
-        navigate("/dashboard"); 
+        if (datos.token) {
+          localStorage.setItem("token", datos.token);
+          dispatch(guardarToken(datos.token));
+          navigate("/dashboard");
+        } else {
+          navigate("/");
+        }
       })
+      .catch(() => navigate("/"))
   }
 
   const onSubmit = data => {
@@ -81,6 +86,10 @@ const FormRegistro = () => {
           setCargando(false);
           setErrorRegistro(datos.error);
         }
+      })
+      .catch(() => {
+        setCargando(false);
+        setErrorRegistro("No se pudo conectar con el servidor.");
       })
   }
 

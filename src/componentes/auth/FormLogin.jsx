@@ -51,6 +51,10 @@ const FormLogin = () => {
           setCargando(false);
           setErrorLogin(datos.error);
         }
+      })
+      .catch(() => {
+        setCargando(false);
+        setErrorLogin("No se pudo conectar con el servidor.");
       });
   };
 
